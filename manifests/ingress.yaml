@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: recylone-approuter
+  namespace: recyclone-dev
+spec:
+  rules:
+  - host: approuter.ingress.recyclone.i524895.shoot.canary.k8s-hana.ondemand.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: recylone-approuter
+            port:
+              number: 5000
+        path: /
+        pathType: ImplementationSpecific

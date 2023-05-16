@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  xs-app.json: |
+    {
+      "authenticationMethod": "route",
+      "routes": [
+        {
+          "source": "^/api/(.*)$",
+          "target": "/$1",
+          "destination": "http-backend",
+          "authenticationType": "xsuaa"
+        },
+        {
+          "source": "^/user-api/currentUser$",
+          "target": "/currentUser",
+          "service": "sap-approuter-userapi"
+        }
+      ],
+      "logout": {
+        "logoutEndpoint": "/logout"
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: approuter-config
+  namespace: recyclone-dev
