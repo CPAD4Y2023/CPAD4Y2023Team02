@@ -3,7 +3,7 @@
   "routes": [
     {
       "source": "^/api/user/(.*)$",
-      "target": "/item/$1",
+      "target": "/user/$1",
       "destination": "user-service",
       "authenticationType": "xsuaa"
     },
