@@ -1,3 +1,7 @@
 */*-secret.yaml
 */default-env.json
 .vscode
+*/node_modules/
+package-lock.json
+*.sqlite
+.DS_Store

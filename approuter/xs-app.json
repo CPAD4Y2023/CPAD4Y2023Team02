@@ -2,9 +2,9 @@
   "authenticationMethod": "route",
   "routes": [
     {
-      "source": "^/api/(.*)$",
-      "target": "/$1",
-      "destination": "http-backend",
+      "source": "^/api/user/(.*)$",
+      "target": "/user/$1",
+      "destination": "user-service",
       "authenticationType": "xsuaa"
     },
     {
