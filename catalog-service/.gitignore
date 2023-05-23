@@ -1,13 +1,3 @@
-*/*-secret.yaml
-*/default-env.json
-.vscode
-*/node_modules/
-package-lock.json
-*.sqlite
-.DS_Store
-
-
-### Defaults ###
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
