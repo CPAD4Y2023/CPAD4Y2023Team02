@@ -1,211 +1,249 @@
 {
 	"info": {
-		"_postman_id": "959ecefd-5688-4fc9-b281-e607bfae7305",
+		"_postman_id": "9138ecdc-3de0-43ec-bcc9-7beb206e5ad3",
 		"name": "Recyclone",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10045412"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Fetch JWT Token",
-			"event": [
+			"name": "Catalog Service",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.environment.set(\"token\", pm.response.json().access_token);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"content-type": true
-				}
-			},
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "{{CLIENT_SECRET}}",
-							"type": "string"
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Paper\",\n    \"items\": [\n        {\n            \"name\": \"Newspaper\"\n        },\n                {\n            \"name\": \"Cardboard\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "username",
-							"value": "{{CLIENT_ID}}",
-							"type": "string"
+						"url": {
+							"raw": "localhost:8080/api/v1/categories",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"categories"
+							]
 						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "grant_type",
-						"value": "password",
-						"type": "text"
 					},
-					{
-						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "grant_type",
-							"value": "password",
-							"type": "text"
-						},
-						{
-							"key": "response_type",
-							"value": "token",
-							"type": "text"
-						},
-						{
-							"key": "username",
-							"value": "{{USER_NAME}}",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "{{USER_PASSWORD}}",
-							"type": "text"
-						},
-						{
-							"key": "scope",
-							"value": "",
-							"type": "text",
-							"disabled": true
-						}
-					]
-				},
-				"url": {
-					"raw": "https://da0f6a6atrial.authentication.us10.hana.ondemand.com/oauth/token",
-					"protocol": "https",
-					"host": [
-						"da0f6a6atrial",
-						"authentication",
-						"us10",
-						"hana",
-						"ondemand",
-						"com"
-					],
-					"path": [
-						"oauth",
-						"token"
-					]
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Create User Details",
-			"event": [
+			"name": "User Service",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.environment.set(\"USER_GUID\", pm.response.json().id);"
+					"name": "Fetch JWT Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"token\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{CLIENT_SECRET}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{CLIENT_ID}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "grant_type",
+								"value": "password",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
 						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "x-approuter-authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"address\": \"This is a test address\",\n    \"latitude\": \"12.978484\",\n    \"longitude\": \"77.715610\",\n    \"role\": \"RECYCLER\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "response_type",
+									"value": "token",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{USER_NAME}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{USER_PASSWORD}}",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "https://da0f6a6atrial.authentication.us10.hana.ondemand.com/oauth/token",
+							"protocol": "https",
+							"host": [
+								"da0f6a6atrial",
+								"authentication",
+								"us10",
+								"hana",
+								"ondemand",
+								"com"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{URL}}/api/user/",
-					"host": [
-						"{{URL}}"
-					],
-					"path": [
-						"api",
-						"user",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get User Details ",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-approuter-authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{URL}}/api/user/",
-					"host": [
-						"{{URL}}"
-					],
-					"path": [
-						"api",
-						"user",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Patch User Details",
-			"request": {
-				"method": "PATCH",
-				"header": [
-					{
-						"key": "x-approuter-authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"address\": \"This is a test address2\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Create User Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"USER_GUID\", pm.response.json().id);"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{URL}}/api/user/",
-					"host": [
-						"{{URL}}"
 					],
-					"path": [
-						"api",
-						"user",
-						""
-					]
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address\": \"This is a test address\",\n    \"latitude\": \"12.978484\",\n    \"longitude\": \"77.715610\",\n    \"role\": \"RECYCLER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/user/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Details ",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/user/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch User Details",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address\": \"This is a test address2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/user/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }
