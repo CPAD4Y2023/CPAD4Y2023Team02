@@ -15,6 +15,9 @@
     <description>catalog-service</description>
     <properties>
         <java.version>17</java.version>
+        <googleJavaFormat.version>1.10.0</googleJavaFormat.version>
+        <spotless-maven-plugin.version>2.36.0</spotless-maven-plugin.version>
+        <maven-checkstyle-plugin.version>3.2.2</maven-checkstyle-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -49,12 +52,37 @@
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
-            <version>3.1.0</version>
+            <version>3.1.1</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <java>
+                        <googleJavaFormat>
+                            <version>${googleJavaFormat.version}</version>
+                        </googleJavaFormat>
+                    </java>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
