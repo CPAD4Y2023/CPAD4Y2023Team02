@@ -1,13 +1,15 @@
 package com.cpad.catalog.services;
 
-import com.cpad.catalog.dtos.common.CreateCategoryDTO;
-import com.cpad.catalog.dtos.common.CreateItemDTO;
+import com.cpad.catalog.dtos.request.CreateCategoryRefactor;
+import com.cpad.catalog.dtos.request.CreateItemRefactor;
+import com.cpad.catalog.dtos.response.CategoryResponse;
 import com.cpad.catalog.entities.Category;
 import com.cpad.catalog.entities.Item;
 import com.cpad.catalog.exceptions.child.CategoryAlreadyExistsException;
 import com.cpad.catalog.exceptions.child.ItemAlreadyExistsException;
 import com.cpad.catalog.exceptions.parent.BadRequestException;
 import com.cpad.catalog.repositories.CategoryRepository;
+import com.cpad.catalog.utils.Commons;
 import com.cpad.catalog.utils.Constants;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,7 +28,7 @@ public class CategoryService {
     private ItemService itemService;
     private CategoryRepository categoryRepository;
 
-    public void createCategory(CreateCategoryDTO createCategoryRequest) throws BadRequestException {
+    public void createCategory(CreateCategoryRefactor createCategoryRequest) throws BadRequestException {
 
         validateCategoryRequest(createCategoryRequest);
 
@@ -34,7 +37,7 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    private void validateCategoryRequest(CreateCategoryDTO createCategoryRequest) throws BadRequestException {
+    private void validateCategoryRequest(CreateCategoryRefactor createCategoryRequest) throws BadRequestException {
 
         createCategoryRequest.setName(createCategoryRequest.getName().trim());
 
@@ -54,7 +57,7 @@ public class CategoryService {
         }
     }
 
-    private Category getCategoryFromRequest(CreateCategoryDTO createCategoryRequest) {
+    private Category getCategoryFromRequest(CreateCategoryRefactor createCategoryRequest) {
         Category category = Category.builder()
                 .name(createCategoryRequest.getName())
                 .build();
@@ -65,7 +68,7 @@ public class CategoryService {
         return category;
     }
 
-    private void mapItemsFromRequestToCategory(Category category, Set<CreateItemDTO> itemsRequest) {
+    private void mapItemsFromRequestToCategory(Category category, Set<CreateItemRefactor> itemsRequest) {
         final Set<Item> items = new HashSet<>();
 
         itemsRequest.forEach(itemRequest -> {
@@ -75,5 +78,11 @@ public class CategoryService {
         });
 
         category.setItems(items);
+    }
+
+    public List<CategoryResponse> getAllCategories() {
+        final List<Category> categories = categoryRepository.findAll();
+
+        return Commons.mapModels(categories, CategoryResponse.class);
     }
 }

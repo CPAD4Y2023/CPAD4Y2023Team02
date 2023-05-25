@@ -1,6 +1,6 @@
 package com.cpad.catalog.services;
 
-import com.cpad.catalog.dtos.common.CreateItemDTO;
+import com.cpad.catalog.dtos.request.CreateItemRefactor;
 import com.cpad.catalog.entities.Item;
 import com.cpad.catalog.exceptions.parent.BadRequestException;
 import com.cpad.catalog.repositories.ItemRepository;
@@ -18,11 +18,11 @@ public class ItemService {
 
     private ItemRepository itemRepository;
 
-    public boolean validateItemsRequest(Set<CreateItemDTO> items) throws BadRequestException {
+    public boolean validateItemsRequest(Set<CreateItemRefactor> items) throws BadRequestException {
         if (CollectionUtils.isEmpty(items))
             return false;
 
-        for (CreateItemDTO item : items) {
+        for (CreateItemRefactor item : items) {
 
             item.setName(item.getName().trim());
 
@@ -36,7 +36,7 @@ public class ItemService {
         return true;
     }
 
-    public Item getItemFromItemRequest(CreateItemDTO itemRequest) {
+    public Item getItemFromItemRequest(CreateItemRefactor itemRequest) {
         return Item.builder()
                 .name(itemRequest.getName())
                 .build();

@@ -1,23 +1,23 @@
-package com.cpad.catalog.dtos.common;
+package com.cpad.catalog.dtos.response;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCategoryDTO {
+public class CategoryResponse {
 
-    @NotBlank(message = "Category name can not be empty")
+    private String id;
+
     private String name;
 
-    private Set<CreateItemDTO> items;
+    private List<ItemResponse> items;
 }

@@ -1,6 +1,5 @@
-package com.cpad.catalog.dtos.common;
+package com.cpad.catalog.dtos.response;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,8 +11,9 @@ import lombok.Setter;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateItemDTO {
+public class ItemResponse {
 
-    @NotBlank(message = "Item name can not be empty")
+    private String id;
+
     private String name;
 }
