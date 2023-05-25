@@ -29,9 +29,8 @@ public class ItemService {
             if (!StringUtils.hasText(item.getName()))
                 throw new BadRequestException(Constants.ITEM_NAME_CAN_NOT_BE_EMPTY_EXCEPTION.getName());
 
-            if (itemRepository.findByNameIgnoreCase(item.getName()).isPresent()) {
+            if (itemRepository.findByNameIgnoreCase(item.getName()).isPresent())
                 return false;
-            }
         }
 
         return true;

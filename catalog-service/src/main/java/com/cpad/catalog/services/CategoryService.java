@@ -44,9 +44,8 @@ public class CategoryService {
         final Optional<Category> categoryOptional = categoryRepository
                 .findByNameIgnoreCase(createCategoryRequest.getName());
 
-        if (categoryOptional.isPresent()) {
+        if (categoryOptional.isPresent())
             throw new CategoryAlreadyExistsException(Constants.CATEGORY_ALREADY_EXISTS_EXCEPTION.getName());
-        }
 
         if (!CollectionUtils.isEmpty(createCategoryRequest.getItems())) {
             boolean areValidItems = itemService.validateItemsRequest(createCategoryRequest.getItems());
@@ -60,15 +59,15 @@ public class CategoryService {
                 .name(createCategoryRequest.getName())
                 .build();
 
-        if (!CollectionUtils.isEmpty(createCategoryRequest.getItems())) {
+        if (!CollectionUtils.isEmpty(createCategoryRequest.getItems()))
             mapItemsFromRequestToCategory(category, createCategoryRequest.getItems());
-        }
 
         return category;
     }
 
     private void mapItemsFromRequestToCategory(Category category, Set<CreateItemDTO> itemsRequest) {
         final Set<Item> items = new HashSet<>();
+
         itemsRequest.forEach(itemRequest -> {
             final Item item = itemService.getItemFromItemRequest(itemRequest);
             item.setCategory(category);
