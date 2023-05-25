@@ -14,10 +14,10 @@ import java.util.Set;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCategoryRefactor {
+public class CreateCategoryRequest {
 
     @NotBlank(message = "Category name can not be empty")
     private String name;
 
-    private Set<CreateItemRefactor> items;
+    private Set<CreateItemRequest> items;
 }

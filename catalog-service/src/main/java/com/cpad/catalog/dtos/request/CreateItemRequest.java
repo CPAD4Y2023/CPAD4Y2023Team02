@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateItemRefactor {
+public class CreateItemRequest {
 
     @NotBlank(message = "Item name can not be empty")
     private String name;

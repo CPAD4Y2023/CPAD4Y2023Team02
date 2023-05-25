@@ -1,7 +1,7 @@
 package com.cpad.catalog.services;
 
-import com.cpad.catalog.dtos.request.CreateCategoryRefactor;
-import com.cpad.catalog.dtos.request.CreateItemRefactor;
+import com.cpad.catalog.dtos.request.CreateCategoryRequest;
+import com.cpad.catalog.dtos.request.CreateItemRequest;
 import com.cpad.catalog.dtos.response.CategoryResponse;
 import com.cpad.catalog.entities.Category;
 import com.cpad.catalog.entities.Item;
@@ -29,16 +29,18 @@ public class CategoryService {
     private ItemService itemService;
     private CategoryRepository categoryRepository;
 
-    public void createCategory(CreateCategoryRefactor createCategoryRequest) throws BadRequestException {
+    public CategoryResponse createCategory(CreateCategoryRequest createCategoryRequest) throws BadRequestException {
 
         validateCategoryRequest(createCategoryRequest);
 
         Category category = getCategoryFromRequest(createCategoryRequest);
 
-        categoryRepository.save(category);
+        final Category savedCategory = categoryRepository.save(category);
+
+        return Commons.mapModel(savedCategory, CategoryResponse.class);
     }
 
-    private void validateCategoryRequest(CreateCategoryRefactor createCategoryRequest) throws BadRequestException {
+    private void validateCategoryRequest(CreateCategoryRequest createCategoryRequest) throws BadRequestException {
 
         createCategoryRequest.setName(createCategoryRequest.getName().trim());
 
@@ -58,7 +60,7 @@ public class CategoryService {
         }
     }
 
-    private Category getCategoryFromRequest(CreateCategoryRefactor createCategoryRequest) {
+    private Category getCategoryFromRequest(CreateCategoryRequest createCategoryRequest) {
         Category category = Category.builder()
                 .name(createCategoryRequest.getName())
                 .build();
@@ -69,7 +71,7 @@ public class CategoryService {
         return category;
     }
 
-    private void mapItemsFromRequestToCategory(Category category, Set<CreateItemRefactor> itemsRequest) {
+    private void mapItemsFromRequestToCategory(Category category, Set<CreateItemRequest> itemsRequest) {
         final Set<Item> items = new HashSet<>();
 
         itemsRequest.forEach(itemRequest -> {
@@ -89,14 +91,9 @@ public class CategoryService {
 
     public CategoryResponse getCategoryById(String id) throws NotFoundException, BadRequestException {
 
-        Commons.validateNumericId(id);
+        final Category category = validateIdAndGetCategoryById(id);
 
-        final Optional<Category> categoryOptional = categoryRepository.findById(id);
-
-        if (categoryOptional.isEmpty())
-            throw new NotFoundException(Constants.CATEGORY_NOT_FOUND.getName());
-
-        return Commons.mapModel(categoryOptional.get(), CategoryResponse.class);
+        return Commons.mapModel(category, CategoryResponse.class);
     }
 
     public void deleteCategoryById(String id) throws BadRequestException {
@@ -104,5 +101,16 @@ public class CategoryService {
         Commons.validateNumericId(id);
 
         categoryRepository.deleteById(id);
+    }
+
+    private Category validateIdAndGetCategoryById(String id) throws BadRequestException, NotFoundException {
+        Commons.validateNumericId(id);
+
+        final Optional<Category> categoryOptional = categoryRepository.findById(id);
+
+        if (categoryOptional.isEmpty())
+            throw new NotFoundException(Constants.CATEGORY_NOT_FOUND.getName());
+
+        return categoryOptional.get();
     }
 }

@@ -1,6 +1,6 @@
 package com.cpad.catalog.controllers;
 
-import com.cpad.catalog.dtos.request.CreateCategoryRefactor;
+import com.cpad.catalog.dtos.request.CreateCategoryRequest;
 import com.cpad.catalog.dtos.response.CatalogServiceResponse;
 import com.cpad.catalog.dtos.response.CategoryResponse;
 import com.cpad.catalog.exceptions.parent.BadRequestException;
@@ -28,11 +28,11 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<CatalogServiceResponse<CreateCategoryRefactor>> createCategory(@Valid @RequestBody CreateCategoryRefactor createCategoryRequest) throws BadRequestException {
+    public ResponseEntity<CatalogServiceResponse<CategoryResponse>> createCategory(@RequestBody @Valid CreateCategoryRequest createCategoryRequest) throws BadRequestException {
 
-        categoryService.createCategory(createCategoryRequest);
+        final CategoryResponse response = categoryService.createCategory(createCategoryRequest);
 
-        return CatalogServiceResponse.created(createCategoryRequest, Constants.CATEGORY_CREATED_SUCCESSFULLY.getName());
+        return CatalogServiceResponse.created(response, Constants.CATEGORY_CREATED_SUCCESSFULLY.getName());
     }
 
     @GetMapping
