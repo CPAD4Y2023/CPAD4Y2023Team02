@@ -8,6 +8,7 @@ import com.cpad.catalog.entities.Item;
 import com.cpad.catalog.exceptions.child.CategoryAlreadyExistsException;
 import com.cpad.catalog.exceptions.child.ItemAlreadyExistsException;
 import com.cpad.catalog.exceptions.parent.BadRequestException;
+import com.cpad.catalog.exceptions.parent.NotFoundException;
 import com.cpad.catalog.repositories.CategoryRepository;
 import com.cpad.catalog.utils.Commons;
 import com.cpad.catalog.utils.Constants;
@@ -84,5 +85,14 @@ public class CategoryService {
         final List<Category> categories = categoryRepository.findAll();
 
         return Commons.mapModels(categories, CategoryResponse.class);
+    }
+
+    public CategoryResponse getCategoryById(String id) throws NotFoundException {
+        final Optional<Category> categoryOptional = categoryRepository.findById(id);
+
+        if (categoryOptional.isEmpty())
+            throw new NotFoundException(Constants.CATEGORY_NOT_FOUND.getName());
+
+        return Commons.mapModel(categoryOptional.get(), CategoryResponse.class);
     }
 }

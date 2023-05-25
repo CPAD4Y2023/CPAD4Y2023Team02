@@ -12,7 +12,7 @@ public interface ResponseConstants {
     @UtilityClass
     class ResponseMessages {
         public static final String GENERIC_FAIL = "Request failed : ";
-        public static final String RESOURCE_RENDERED_SUCCESSFULLY = "resource rendered successfully.";
+        public static final String RESOURCE_RENDERED_SUCCESSFULLY = "Resource rendered successfully.";
         public static final String CONTINUE_MESSAGE = "continue for addition resource.";
         public static final String SWITCHING_PROTOCOLS_MESSAGE = "switching protocols for client.";
         public static final String PROCESSING_MESSAGE = "processing request.";
