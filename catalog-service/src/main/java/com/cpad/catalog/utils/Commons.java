@@ -1,9 +1,11 @@
 package com.cpad.catalog.utils;
 
+import com.cpad.catalog.exceptions.parent.BadRequestException;
 import lombok.experimental.UtilityClass;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -34,5 +36,16 @@ public class Commons {
     public static <S, D> D mapModel(final S source, D destination) {
         modelMapper.map(source, destination);
         return destination;
+    }
+
+    public static void validateNumericId(String id) throws BadRequestException {
+        if (!StringUtils.hasText(id))
+            throw new BadRequestException(Constants.ID_CAN_NOT_BE_EMPTY.getName());
+
+        try {
+            Integer.parseInt(id);
+        } catch (NumberFormatException ex) {
+            throw new BadRequestException(Constants.INVALID_ID.getName());
+        }
     }
 }

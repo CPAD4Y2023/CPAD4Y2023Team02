@@ -10,6 +10,7 @@ import com.cpad.catalog.utils.Constants;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,10 +44,18 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CatalogServiceResponse<CategoryResponse>> getCategoryById(@PathVariable String id) throws NotFoundException {
+    public ResponseEntity<CatalogServiceResponse<CategoryResponse>> getCategoryById(@PathVariable String id) throws NotFoundException, BadRequestException {
 
         final CategoryResponse category = categoryService.getCategoryById(id);
 
         return CatalogServiceResponse.ok(category);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CatalogServiceResponse<String>> deleteCategoryById(@PathVariable String id) throws BadRequestException {
+
+        categoryService.deleteCategoryById(id);
+
+        return CatalogServiceResponse.noContent();
     }
 }

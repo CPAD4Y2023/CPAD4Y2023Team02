@@ -87,12 +87,22 @@ public class CategoryService {
         return Commons.mapModels(categories, CategoryResponse.class);
     }
 
-    public CategoryResponse getCategoryById(String id) throws NotFoundException {
+    public CategoryResponse getCategoryById(String id) throws NotFoundException, BadRequestException {
+
+        Commons.validateNumericId(id);
+
         final Optional<Category> categoryOptional = categoryRepository.findById(id);
 
         if (categoryOptional.isEmpty())
             throw new NotFoundException(Constants.CATEGORY_NOT_FOUND.getName());
 
         return Commons.mapModel(categoryOptional.get(), CategoryResponse.class);
+    }
+
+    public void deleteCategoryById(String id) throws BadRequestException {
+
+        Commons.validateNumericId(id);
+
+        categoryRepository.deleteById(id);
     }
 }
