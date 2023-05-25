@@ -12,105 +12,108 @@ import com.cpad.catalog.exceptions.parent.NotFoundException;
 import com.cpad.catalog.repositories.CategoryRepository;
 import com.cpad.catalog.utils.Commons;
 import com.cpad.catalog.utils.Constants;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 @Service
 @AllArgsConstructor
 public class CategoryService {
 
-    private ItemService itemService;
-    private CategoryRepository categoryRepository;
+  private ItemService itemService;
+  private CategoryRepository categoryRepository;
 
-    public CategoryResponse createCategory(CreateCategoryRequest createCategoryRequest) throws BadRequestException {
+  public CategoryResponse createCategory(CreateCategoryRequest createCategoryRequest)
+      throws BadRequestException {
 
-        validateCategoryRequest(createCategoryRequest);
+    validateCategoryRequest(createCategoryRequest);
 
-        Category category = getCategoryFromRequest(createCategoryRequest);
+    Category category = getCategoryFromRequest(createCategoryRequest);
 
-        final Category savedCategory = categoryRepository.save(category);
+    final Category savedCategory = categoryRepository.save(category);
 
-        return Commons.mapModel(savedCategory, CategoryResponse.class);
+    return Commons.mapModel(savedCategory, CategoryResponse.class);
+  }
+
+  private void validateCategoryRequest(CreateCategoryRequest createCategoryRequest)
+      throws BadRequestException {
+
+    createCategoryRequest.setName(createCategoryRequest.getName().trim());
+
+    if (!StringUtils.hasText(createCategoryRequest.getName()))
+      throw new BadRequestException(Constants.CATEGORY_NAME_CAN_NOT_BE_EMPTY_EXCEPTION.getName());
+
+    final Optional<Category> categoryOptional =
+        categoryRepository.findByNameIgnoreCase(createCategoryRequest.getName());
+
+    if (categoryOptional.isPresent())
+      throw new CategoryAlreadyExistsException(
+          Constants.CATEGORY_ALREADY_EXISTS_EXCEPTION.getName());
+
+    if (!CollectionUtils.isEmpty(createCategoryRequest.getItems())) {
+      boolean areValidItems = itemService.validateItemsRequest(createCategoryRequest.getItems());
+      if (!areValidItems)
+        throw new ItemAlreadyExistsException(Constants.ITEM_ALREADY_EXISTS_EXCEPTION.getName());
     }
+  }
 
-    private void validateCategoryRequest(CreateCategoryRequest createCategoryRequest) throws BadRequestException {
+  private Category getCategoryFromRequest(CreateCategoryRequest createCategoryRequest) {
+    Category category = Category.builder().name(createCategoryRequest.getName()).build();
 
-        createCategoryRequest.setName(createCategoryRequest.getName().trim());
+    if (!CollectionUtils.isEmpty(createCategoryRequest.getItems()))
+      mapItemsFromRequestToCategory(category, createCategoryRequest.getItems());
 
-        if (!StringUtils.hasText(createCategoryRequest.getName()))
-            throw new BadRequestException(Constants.CATEGORY_NAME_CAN_NOT_BE_EMPTY_EXCEPTION.getName());
+    return category;
+  }
 
-        final Optional<Category> categoryOptional = categoryRepository
-                .findByNameIgnoreCase(createCategoryRequest.getName());
+  private void mapItemsFromRequestToCategory(
+      Category category, Set<CreateItemRequest> itemsRequest) {
+    final Set<Item> items = new HashSet<>();
 
-        if (categoryOptional.isPresent())
-            throw new CategoryAlreadyExistsException(Constants.CATEGORY_ALREADY_EXISTS_EXCEPTION.getName());
-
-        if (!CollectionUtils.isEmpty(createCategoryRequest.getItems())) {
-            boolean areValidItems = itemService.validateItemsRequest(createCategoryRequest.getItems());
-            if (!areValidItems)
-                throw new ItemAlreadyExistsException(Constants.ITEM_ALREADY_EXISTS_EXCEPTION.getName());
-        }
-    }
-
-    private Category getCategoryFromRequest(CreateCategoryRequest createCategoryRequest) {
-        Category category = Category.builder()
-                .name(createCategoryRequest.getName())
-                .build();
-
-        if (!CollectionUtils.isEmpty(createCategoryRequest.getItems()))
-            mapItemsFromRequestToCategory(category, createCategoryRequest.getItems());
-
-        return category;
-    }
-
-    private void mapItemsFromRequestToCategory(Category category, Set<CreateItemRequest> itemsRequest) {
-        final Set<Item> items = new HashSet<>();
-
-        itemsRequest.forEach(itemRequest -> {
-            final Item item = itemService.getItemFromItemRequest(itemRequest);
-            item.setCategory(category);
-            items.add(item);
+    itemsRequest.forEach(
+        itemRequest -> {
+          final Item item = itemService.getItemFromItemRequest(itemRequest);
+          item.setCategory(category);
+          items.add(item);
         });
 
-        category.setItems(items);
-    }
+    category.setItems(items);
+  }
 
-    public List<CategoryResponse> getAllCategories() {
-        final List<Category> categories = categoryRepository.findAll();
+  public List<CategoryResponse> getAllCategories() {
+    final List<Category> categories = categoryRepository.findAll();
 
-        return Commons.mapModels(categories, CategoryResponse.class);
-    }
+    return Commons.mapModels(categories, CategoryResponse.class);
+  }
 
-    public CategoryResponse getCategoryById(String id) throws NotFoundException, BadRequestException {
+  public CategoryResponse getCategoryById(String id) throws NotFoundException, BadRequestException {
 
-        final Category category = validateIdAndGetCategoryById(id);
+    final Category category = validateIdAndGetCategoryById(id);
 
-        return Commons.mapModel(category, CategoryResponse.class);
-    }
+    return Commons.mapModel(category, CategoryResponse.class);
+  }
 
-    public void deleteCategoryById(String id) throws BadRequestException {
+  public void deleteCategoryById(String id) throws BadRequestException {
 
-        Commons.validateNumericId(id);
+    Commons.validateNumericId(id);
 
-        categoryRepository.deleteById(id);
-    }
+    categoryRepository.deleteById(id);
+  }
 
-    private Category validateIdAndGetCategoryById(String id) throws BadRequestException, NotFoundException {
-        Commons.validateNumericId(id);
+  private Category validateIdAndGetCategoryById(String id)
+      throws BadRequestException, NotFoundException {
+    Commons.validateNumericId(id);
 
-        final Optional<Category> categoryOptional = categoryRepository.findById(id);
+    final Optional<Category> categoryOptional = categoryRepository.findById(id);
 
-        if (categoryOptional.isEmpty())
-            throw new NotFoundException(Constants.CATEGORY_NOT_FOUND.getName());
+    if (categoryOptional.isEmpty())
+      throw new NotFoundException(Constants.CATEGORY_NOT_FOUND.getName());
 
-        return categoryOptional.get();
-    }
+    return categoryOptional.get();
+  }
 }

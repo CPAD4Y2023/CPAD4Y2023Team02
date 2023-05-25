@@ -14,6 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateItemRequest {
 
-    @NotBlank(message = "Item name can not be empty")
-    private String name;
+  @NotBlank(message = "Item name can not be empty")
+  private String name;
 }

@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ItemResponse {
 
-    private String id;
+  private String id;
 
-    private String name;
+  private String name;
 }

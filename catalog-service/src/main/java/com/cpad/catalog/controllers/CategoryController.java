@@ -8,6 +8,7 @@ import com.cpad.catalog.exceptions.parent.NotFoundException;
 import com.cpad.catalog.services.CategoryService;
 import com.cpad.catalog.utils.Constants;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,44 +19,46 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("api/v1/categories")
 @AllArgsConstructor
 public class CategoryController {
 
-    private CategoryService categoryService;
+  private CategoryService categoryService;
 
-    @PostMapping
-    public ResponseEntity<CatalogServiceResponse<CategoryResponse>> createCategory(@RequestBody @Valid CreateCategoryRequest createCategoryRequest) throws BadRequestException {
+  @PostMapping
+  public ResponseEntity<CatalogServiceResponse<CategoryResponse>> createCategory(
+      @RequestBody @Valid CreateCategoryRequest createCategoryRequest) throws BadRequestException {
 
-        final CategoryResponse response = categoryService.createCategory(createCategoryRequest);
+    final CategoryResponse response = categoryService.createCategory(createCategoryRequest);
 
-        return CatalogServiceResponse.created(response, Constants.CATEGORY_CREATED_SUCCESSFULLY.getName());
-    }
+    return CatalogServiceResponse.created(
+        response, Constants.CATEGORY_CREATED_SUCCESSFULLY.getName());
+  }
 
-    @GetMapping
-    public ResponseEntity<CatalogServiceResponse<List<CategoryResponse>>> getAllCategories() {
+  @GetMapping
+  public ResponseEntity<CatalogServiceResponse<List<CategoryResponse>>> getAllCategories() {
 
-        final List<CategoryResponse> allCategories = categoryService.getAllCategories();
+    final List<CategoryResponse> allCategories = categoryService.getAllCategories();
 
-        return CatalogServiceResponse.ok(allCategories);
-    }
+    return CatalogServiceResponse.ok(allCategories);
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CatalogServiceResponse<CategoryResponse>> getCategoryById(@PathVariable String id) throws NotFoundException, BadRequestException {
+  @GetMapping("/{id}")
+  public ResponseEntity<CatalogServiceResponse<CategoryResponse>> getCategoryById(
+      @PathVariable String id) throws NotFoundException, BadRequestException {
 
-        final CategoryResponse category = categoryService.getCategoryById(id);
+    final CategoryResponse category = categoryService.getCategoryById(id);
 
-        return CatalogServiceResponse.ok(category);
-    }
+    return CatalogServiceResponse.ok(category);
+  }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<CatalogServiceResponse<String>> deleteCategoryById(@PathVariable String id) throws BadRequestException {
+  @DeleteMapping("/{id}")
+  public ResponseEntity<CatalogServiceResponse<String>> deleteCategoryById(@PathVariable String id)
+      throws BadRequestException {
 
-        categoryService.deleteCategoryById(id);
+    categoryService.deleteCategoryById(id);
 
-        return CatalogServiceResponse.noContent();
-    }
+    return CatalogServiceResponse.noContent();
+  }
 }

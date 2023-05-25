@@ -20,13 +20,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Item {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    private String name;
+  private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "category", referencedColumnName = "id", nullable = false)
-    private Category category;
+  @ManyToOne
+  @JoinColumn(name = "category", referencedColumnName = "id", nullable = false)
+  private Category category;
 }
