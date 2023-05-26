@@ -2,6 +2,8 @@ package com.cpad.catalog.services;
 
 import com.cpad.catalog.dtos.request.CreateCategoryRequest;
 import com.cpad.catalog.dtos.request.CreateItemRequest;
+import com.cpad.catalog.dtos.request.UpdateCategoryRequest;
+import com.cpad.catalog.dtos.request.UpdateItemRequest;
 import com.cpad.catalog.dtos.response.CategoryResponse;
 import com.cpad.catalog.entities.Category;
 import com.cpad.catalog.entities.Item;
@@ -12,12 +14,16 @@ import com.cpad.catalog.exceptions.parent.NotFoundException;
 import com.cpad.catalog.repositories.CategoryRepository;
 import com.cpad.catalog.utils.Commons;
 import com.cpad.catalog.utils.Constants;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -53,12 +59,12 @@ public class CategoryService {
 
     if (categoryOptional.isPresent())
       throw new CategoryAlreadyExistsException(
-          Constants.CATEGORY_ALREADY_EXISTS_EXCEPTION.getName());
+          String.format(
+              Constants.CATEGORY_ALREADY_EXISTS_EXCEPTION.getName(),
+              categoryOptional.get().getName()));
 
     if (!CollectionUtils.isEmpty(createCategoryRequest.getItems())) {
-      boolean areValidItems = itemService.validateItemsRequest(createCategoryRequest.getItems());
-      if (!areValidItems)
-        throw new ItemAlreadyExistsException(Constants.ITEM_ALREADY_EXISTS_EXCEPTION.getName());
+      itemService.validateItemsRequest(createCategoryRequest.getItems());
     }
   }
 
@@ -112,8 +118,120 @@ public class CategoryService {
     final Optional<Category> categoryOptional = categoryRepository.findById(id);
 
     if (categoryOptional.isEmpty())
-      throw new NotFoundException(Constants.CATEGORY_NOT_FOUND.getName());
+      throw new NotFoundException(Constants.CATEGORY_DOES_NOT_EXISTS.getName());
 
     return categoryOptional.get();
+  }
+
+  @Transactional
+  public CategoryResponse updateCategory(String id, UpdateCategoryRequest updateCategoryRequest)
+      throws BadRequestException, NotFoundException {
+
+    final Category category = validateIdAndGetCategoryById(id);
+
+    validateUpdateRequest(category, updateCategoryRequest);
+
+    // Update category
+    category.setName(updateCategoryRequest.getName());
+
+    // Get the existing items of the category
+    Set<Item> existingItems = category.getItems();
+
+    Map<Long, UpdateItemRequest> updatedItemsMap =
+        getItemIdAndUpdatedItemsRequestMap(updateCategoryRequest.getItems(), category);
+
+    updateExistingItems(existingItems, updatedItemsMap);
+
+    // Delete remaining items that were not updated
+    deleteRemainingItems(existingItems, updatedItemsMap);
+
+    final Category response = categoryRepository.save(category);
+
+    return Commons.mapModel(response, CategoryResponse.class);
+  }
+
+  private void validateUpdateRequest(Category category, UpdateCategoryRequest updateCategoryRequest)
+      throws BadRequestException {
+
+    updateCategoryRequest.setName(updateCategoryRequest.getName().trim());
+
+    final boolean categoryNameAlreadyPresent =
+        categoryRepository.existsByNameIgnoreCaseAndIdNotIn(
+            updateCategoryRequest.getName(), List.of(category.getId()));
+    if (categoryNameAlreadyPresent)
+      throw new ItemAlreadyExistsException(
+          String.format(
+              Constants.CATEGORY_ALREADY_EXISTS_EXCEPTION.getName(),
+              updateCategoryRequest.getName()));
+
+    validateItems(category, updateCategoryRequest.getItems());
+  }
+
+  private void deleteRemainingItems(
+      Set<Item> existingItems, Map<Long, UpdateItemRequest> updatedItemsMap) {
+    Set<Item> removedItems = new HashSet<>();
+    for (Item existingItem : existingItems) {
+      if (existingItem.getId() != null) {
+        if (!updatedItemsMap.containsKey(existingItem.getId())) {
+          itemService.deleteItemById(existingItem.getId().toString());
+          removedItems.add(existingItem);
+        }
+      }
+    }
+
+    existingItems.removeAll(removedItems);
+  }
+
+  private static void updateExistingItems(
+      Set<Item> existingItems, Map<Long, UpdateItemRequest> updatedItemsMap) {
+    // Update existing items with the request
+    for (Item existingItem : existingItems) {
+      if (existingItem.getId() != null) {
+        UpdateItemRequest updatedItem = updatedItemsMap.get(existingItem.getId());
+        if (updatedItem != null) {
+          existingItem.setName(updatedItem.getName());
+        }
+      }
+    }
+  }
+
+  private void validateItems(Category category, List<UpdateItemRequest> itemRequests)
+      throws BadRequestException {
+    for (UpdateItemRequest itemRequest : itemRequests) {
+      if (itemRequest.getId() != null) {
+        final Optional<Item> itemOptional =
+            category.getItems().stream()
+                .filter(item -> Objects.equals(item.getId(), itemRequest.getId()))
+                .findFirst();
+        if (itemOptional.isEmpty())
+          throw new BadRequestException(Constants.ITEM_NOT_FOUND.getName());
+      }
+    }
+
+    itemService.validateItemsNames(itemRequests);
+  }
+
+  private Map<Long, UpdateItemRequest> getItemIdAndUpdatedItemsRequestMap(
+      List<UpdateItemRequest> itemRequests, Category category) {
+
+    Map<Long, UpdateItemRequest> updatedItemsMap = new HashMap<>();
+
+    for (UpdateItemRequest itemRequest : itemRequests) {
+      if (itemRequest.getId() != null) {
+        // Item with an ID, mark it for update
+        updatedItemsMap.put(itemRequest.getId(), itemRequest);
+      } else {
+        // Item without an ID, mark it for creation
+        createNewItem(category, itemRequest);
+      }
+    }
+    return updatedItemsMap;
+  }
+
+  private void createNewItem(Category category, UpdateItemRequest itemRequest) {
+    Item newItem = new Item();
+    newItem.setName(itemRequest.getName());
+    newItem.setCategory(category);
+    category.getItems().add(newItem);
   }
 }
