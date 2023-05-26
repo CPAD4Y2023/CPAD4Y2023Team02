@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Paper\",\n    \"items\": [\n        {\n            \"name\": \"Newspaper\"\n        },\n                {\n            \"name\": \"Cardboard\"\n        }\n    ]\n}",
+							"raw": "{\n    \"name\": \"Papers\",\n    \"items\": [\n        {\n            \"name\": \"Newspapers\"\n        },\n        {\n            \"name\": \"Cardboards\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -32,6 +32,36 @@
 								"api",
 								"v1",
 								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Papers\",\n    \"items\": [\n        {\n            \"id\": \"2\",\n            \"name\": \"Cardboards\"\n        },\n        {\n            \"name\": \"Books\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/categories/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"categories",
+								"1"
 							]
 						}
 					},
