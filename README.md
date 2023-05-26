@@ -1,4 +1,4 @@
-# CPAD4Y2023Team02
+# CPAD 4Y 2023 Team-2
 
 Team Members
 * Abhijeet Kumar
