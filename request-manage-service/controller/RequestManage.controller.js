@@ -21,9 +21,6 @@ const manageRequestSchema = {
   },
 }
 
-function appendHeaders(req, data) {
-  return data
-}
 
 // ------ Need Vendor Management Service For This -------
 //Create request in database
@@ -48,7 +45,7 @@ function appendHeaders(req, data) {
 //        // Save in the database
 //        ManageRequest.create(manageRequest)
 //          .then((data) => {
-//            data = appendHeaders(req, data)
+//
 //            res.status(201).send(data);
 //          })
 //          .catch((err) => {
@@ -99,7 +96,7 @@ exports.createRequest = (req,res) => {
         // Save in the database
         ManageRequest.create(manageRequest)
           .then((data) => {
-            data = appendHeaders(req, data)
+
             res.status(201).send(data);
           })
           .catch((err) => {
@@ -137,7 +134,7 @@ exports.getAllRequest = (req, res) => {
          })
          .then(data => {
            if (data) {
-             data = appendHeaders(req, data)
+
              res.send(data);
            } else {
              res.status(404).send({
@@ -154,7 +151,7 @@ exports.getAllRequest = (req, res) => {
           })
          .then(data => {
                if (data) {
-                 data = appendHeaders(req, data)
+
                  res.send(data);
                } else {
                  res.status(404).send({
@@ -185,7 +182,7 @@ exports.getAllRequest = (req, res) => {
 //         })
 //         .then(data => {
 //           if (data) {
-//             data = appendHeaders(req, data)
+//
 //             res.send(data);
 //           } else {
 //             res.status(404).send({
@@ -202,7 +199,7 @@ exports.getAllRequest = (req, res) => {
 //          })
 //         .then(data => {
 //               if (data) {
-//                 data = appendHeaders(req, data)
+//
 //                 res.send(data);
 //               } else {
 //                 res.status(404).send({
@@ -228,7 +225,7 @@ exports.getRequestByReqId = (req, res) => {
   ManageRequest.findByPk(reqId)
     .then(data => {
       if (data) {
-        data = appendHeaders(req, data)
+
         res.status(200).send(data);
       } else {
         res.status(404).send({message: `Cannot find request with reqId ${reqId}.`
@@ -272,7 +269,7 @@ exports.getRequestByReqId = (req, res) => {
 //          ManageRequest.findByPk(reqId)
 //            .then(data => {
 //              if (data) {
-//                data = appendHeaders(req, data)
+//
 //                res.status(200).send(data);
 //              }
 //            })
@@ -321,7 +318,7 @@ exports.updateRequest = (req, res) => {
           ManageRequest.findByPk(reqId)
             .then(data => {
               if (data) {
-                data = appendHeaders(req, data)
+
                 res.status(200).send(data);
               }
             })
