@@ -64,6 +64,39 @@ flutter:
     - images/onbording/first.png
     - images/onbording/second.png
     - images/onbording/last.png
+    - images/products/glass.png
+    - images/products/metal.png
+    - images/products/paper.png
+    - images/products/plastic.png
+    - images/products/e-waste.png
+    - images/products/battery.png
+    # plastic category
+    - images/plastic-category/hdpe.png
+    - images/plastic-category/ldpe.png
+    - images/plastic-category/pete.png
+    - images/plastic-category/pp.png
+    - images/plastic-category/ps.png
+    - images/plastic-category/pvc.png
+    # battery category
+    - images/battery-category/lead-acid.png
+    - images/battery-category/lithium-ion.png
+    - images/battery-category/silver-oxide.png
+    # glass category
+    - images/glass-category/glass.png
+    # ewaste category
+    - images/ewaste-category/large-household.png
+    - images/ewaste-category/it-equipment.png
+    - images/ewaste-category/medical.png
+    - images/ewaste-category/lighting.png
+    # paper category
+    - images/paper-category/graphic-paper.png
+    - images/paper-category/packaging-paper.png
+    # metal category
+    - images/metal-category/iron.png
+    - images/metal-category/carbide.png
+    - images/metal-category/copper.png
+    - images/metal-category/titanium.png
+    - images/metal-category/aluminum.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
