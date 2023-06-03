@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'home/home.dart';
+
 class Skeleton extends StatefulWidget {
   const Skeleton({super.key});
 
@@ -14,10 +16,7 @@ class _SkeletonState extends State<Skeleton> {
   );
 
   static const List<Widget> _widgetOptions = <Widget> [
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
+    Home(),
     Text(
       'Index 1: Cart',
       style: optionStyle,
@@ -41,9 +40,8 @@ class _SkeletonState extends State<Skeleton> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      backgroundColor: Color(int.parse("0xfff7f7f7")),
       bottomNavigationBar: 
         Container(
           decoration: const BoxDecoration(
@@ -60,6 +58,7 @@ class _SkeletonState extends State<Skeleton> {
                 icon: Icon(Icons.home, color: Color(int.parse("0xff222222"))),
                 activeIcon: const Icon(Icons.home),
                 label: 'Home',
+                backgroundColor: Color(int.parse("0xffffffff")),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.shopping_cart, color: Color(int.parse("0xff222222"))),
@@ -78,7 +77,6 @@ class _SkeletonState extends State<Skeleton> {
               ),
             ],
             currentIndex: _selectedIndex,
-            backgroundColor: Color(int.parse("0xffffffff")),
             selectedItemColor: Colors.green,
             onTap: _onItemTapped,
           ),
