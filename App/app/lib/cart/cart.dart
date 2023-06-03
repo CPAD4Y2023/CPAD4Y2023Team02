@@ -15,8 +15,8 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Container(
       child: Consumer<CartViewModel>(builder: (context, viewModel, child) {
-        String categoryName = viewModel.cartItem[0].categoryName;
-        return Text(categoryName);
+        String name = viewModel.cartItem[0].name;
+        return Text(name);
       }),
     );
   }

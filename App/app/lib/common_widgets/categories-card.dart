@@ -50,7 +50,7 @@ class _CategoriesCardState extends State<CategoriesCard> {
               setState(() {
                 isAddedToCart = !isAddedToCart;
               });
-              _showToast(context, isAddedToCart, widget.categoryItem.categoryName);
+              _showToast(context, isAddedToCart, widget.categoryItem.name);
               Provider.of<CartViewModel>(context, listen: false).addCartItem(widget.categoryItem);
             },
           ),
@@ -59,12 +59,12 @@ class _CategoriesCardState extends State<CategoriesCard> {
   }
 }
 
-void _showToast(BuildContext context, bool isAddedToCart, categoryName) {
+void _showToast(BuildContext context, bool isAddedToCart, name) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
         content: Text(
-          isAddedToCart? "$categoryName added to cart": "$categoryName removed from cart",
+          isAddedToCart? "$name added to cart": "$name removed from cart",
         ),
         action: SnackBarAction(label: 'Dismiss', onPressed: scaffold.hideCurrentSnackBar),
       ),
