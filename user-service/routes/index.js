@@ -4,8 +4,7 @@ const users = require("../controller/User.controller.js");
 
 
 /* GET home page. */
-router.post('/user', users.create)
-  .get('/user', users.findOne)
+router.get('/user', users.findOne)
   .put('/user', users.update)
   .patch('/user', users.update)
   .delete('/user', users.delete);
