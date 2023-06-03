@@ -1,4 +1,6 @@
+import 'package:app/model/cartModel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../data_constants/categories-data.dart';
 
 class CategoriesCard extends StatefulWidget {
@@ -49,6 +51,7 @@ class _CategoriesCardState extends State<CategoriesCard> {
                 isAddedToCart = !isAddedToCart;
               });
               _showToast(context, isAddedToCart, widget.categoryItem.categoryName);
+              Provider.of<CartViewModel>(context, listen: false).addCartItem(widget.categoryItem);
             },
           ),
         ]),
