@@ -14,16 +14,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.UUID,
             allowNull: false,
         },
-        categoryId: {
-            type: DataTypes.UUID,
-            allowNull: false,
-      },
-      quantity: {
-           type: DataTypes.FLOAT,
-           allowNull: true,
-      },
-        fare: {
-            type: DataTypes.FLOAT,
+        totalPrice: {
+            type: DataTypes.INTEGER,
             allowNull: true,
       },
       status: {
