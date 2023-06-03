@@ -27,6 +27,8 @@ public class Category {
 
   private String name;
 
+  private String imageLocation;
+
   @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
   private Set<Item> items;
 }

@@ -1,6 +1,8 @@
 package com.cpad.catalog.dtos.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +20,10 @@ public class UpdateCategoryRequest {
   @NotBlank(message = "Category name can not be empty")
   private String name;
 
+  @NotBlank(message = "Image location can not be empty")
+  private String imageLocation;
+
+  @Valid
+  @NotNull(message = "Items are required")
   private List<UpdateItemRequest> items;
 }

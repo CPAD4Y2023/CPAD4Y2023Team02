@@ -26,6 +26,12 @@ public class Item {
 
   private String name;
 
+  private String imageLocation;
+
+  private String description;
+
+  private String metric;
+
   @ManyToOne
   @JoinColumn(name = "category", referencedColumnName = "id", nullable = false)
   private Category category;

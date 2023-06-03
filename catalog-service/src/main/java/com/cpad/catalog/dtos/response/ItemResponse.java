@@ -16,4 +16,10 @@ public class ItemResponse {
   private String id;
 
   private String name;
+
+  private String imageLocation;
+
+  private String metric;
+
+  private String description;
 }
