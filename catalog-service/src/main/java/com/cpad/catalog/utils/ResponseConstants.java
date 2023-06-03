@@ -4,10 +4,10 @@ import lombok.experimental.UtilityClass;
 
 public interface ResponseConstants {
 
-  String CORRELATION_ID_HEADER_KEY = "x-correlationid";
-  String MDC_CORRELATION_ID = "correlation_id";
-  String APPLICATION_JSON = "application/json";
-  String CONTENT_TYPE = "Content-Type";
+  public static String CORRELATION_ID_HEADER_KEY = "x-correlationid";
+  public static String MDC_CORRELATION_ID = "correlation_id";
+  public static String APPLICATION_JSON = "application/json";
+  public static String CONTENT_TYPE = "Content-Type";
 
   @UtilityClass
   class ResponseMessages {
@@ -87,5 +87,6 @@ public interface ResponseConstants {
     public static final String NOT_EXTENDED_MESSAGE = " notExtended.";
     public static final String NETWORK_AUTHENTICATION_REQUIRED_MESSAGE =
         " networkAuthenticationRequired.";
+    public static final String VALIDATION_FAILED = "Validation failed.";
   }
 }

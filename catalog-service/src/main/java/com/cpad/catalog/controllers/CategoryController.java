@@ -30,7 +30,7 @@ public class CategoryController {
 
   @PostMapping
   public ResponseEntity<CatalogServiceResponse<CategoryResponse>> createCategory(
-      @RequestBody @Valid CreateCategoryRequest createCategoryRequest) throws BadRequestException {
+      @Valid @RequestBody CreateCategoryRequest createCategoryRequest) throws BadRequestException {
 
     final CategoryResponse response = categoryService.createCategory(createCategoryRequest);
 
@@ -57,7 +57,7 @@ public class CategoryController {
 
   @PutMapping("/{id}")
   public ResponseEntity<CatalogServiceResponse<CategoryResponse>> updateCategory(
-      @PathVariable String id, @RequestBody @Valid UpdateCategoryRequest updateCategoryRequest)
+      @PathVariable String id, @Valid @RequestBody UpdateCategoryRequest updateCategoryRequest)
       throws NotFoundException, BadRequestException {
 
     final CategoryResponse category = categoryService.updateCategory(id, updateCategoryRequest);

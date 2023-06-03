@@ -8,12 +8,14 @@ import com.cpad.catalog.exceptions.parent.InternalServerException;
 import com.cpad.catalog.exceptions.parent.NotFoundException;
 import com.cpad.catalog.exceptions.parent.PermissionException;
 import com.cpad.catalog.exceptions.parent.UnauthorizedException;
+import com.cpad.catalog.utils.ResponseConstants;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,18 +31,20 @@ public class ExceptionsHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-  public ResponseEntity<CatalogServiceResponse<String>> handleAllExceptions(
+  public ResponseEntity<CatalogServiceResponse<Map<String, List<String>>>> handleAllExceptions(
       MethodArgumentNotValidException ex) {
-    BindingResult bindingResult = ex.getBindingResult();
-    String message;
-    if (bindingResult.hasFieldErrors()) {
-      FieldError fieldError = bindingResult.getFieldErrors().get(0);
-      message = String.format("%s %s", fieldError.getField(), fieldError.getDefaultMessage());
-    } else {
-      ObjectError objectError = bindingResult.getAllErrors().get(0);
-      message = String.format("%s %s", objectError, objectError.getDefaultMessage());
-    }
-    return CatalogServiceResponse.badRequest(null, message);
+
+    Map<String, List<String>> body = new HashMap<>();
+
+    List<String> errors =
+        ex.getBindingResult().getFieldErrors().stream()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .toList();
+
+    body.put("errors", errors);
+
+    return CatalogServiceResponse.badRequest(
+        body, ResponseConstants.ResponseMessages.VALIDATION_FAILED);
   }
 
   @ExceptionHandler(PermissionException.class)

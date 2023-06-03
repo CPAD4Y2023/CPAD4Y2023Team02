@@ -18,4 +18,13 @@ public class UpdateItemRequest {
 
   @NotBlank(message = "Item name can not be empty")
   private String name;
+
+  @NotBlank(message = "Image location can not be empty")
+  private String imageLocation;
+
+  @NotBlank(message = "Metric location can not be empty")
+  private String metric;
+
+  @NotBlank(message = "Description name can not be empty")
+  private String description;
 }

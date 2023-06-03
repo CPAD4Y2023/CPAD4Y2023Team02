@@ -37,7 +37,12 @@ public class ItemService {
   }
 
   public Item getItemFromItemRequest(CreateItemRequest itemRequest) {
-    return Item.builder().name(itemRequest.getName()).build();
+    return Item.builder()
+        .name(itemRequest.getName())
+        .imageLocation(itemRequest.getImageLocation())
+        .description(itemRequest.getDescription())
+        .metric(itemRequest.getMetric())
+        .build();
   }
 
   public void deleteItemById(String id) {

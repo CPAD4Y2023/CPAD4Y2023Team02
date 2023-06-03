@@ -18,5 +18,7 @@ public class CategoryResponse {
 
   private String name;
 
+  private String imageLocation;
+
   private List<ItemResponse> items;
 }

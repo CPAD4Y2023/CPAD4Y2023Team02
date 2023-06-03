@@ -69,7 +69,11 @@ public class CategoryService {
   }
 
   private Category getCategoryFromRequest(CreateCategoryRequest createCategoryRequest) {
-    Category category = Category.builder().name(createCategoryRequest.getName()).build();
+    Category category =
+        Category.builder()
+            .name(createCategoryRequest.getName())
+            .imageLocation(createCategoryRequest.getImageLocation())
+            .build();
 
     if (!CollectionUtils.isEmpty(createCategoryRequest.getItems()))
       mapItemsFromRequestToCategory(category, createCategoryRequest.getItems());
