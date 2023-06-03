@@ -22,9 +22,9 @@ const manageRequestSchema = {
 
 //Create request in database     -- local
 exports.createRequest = (req,res) => {
-//    const userId = req.headers['x-userid'];
+    const userId = req.headers['x-userid'];
 
-    const userId ="user101";   //for local
+//    const userId ="user101";   //for local
     let totalPrice = 0;
 
     req.body.forEach(item => {
@@ -72,9 +72,9 @@ exports.createRequest = (req,res) => {
 
 // Find all request for given user
 exports.getAllRequest = (req, res) => {
-//  const userId = req.headers['x-userid'];
+  const userId = req.headers['x-userid'];
 
-  const userId ="user101";    //local
+//  const userId ="user101";    //local
   const role = "CONSUMER";
    if(role === "CONSUMER"){
     ManageRequest.findAll({
