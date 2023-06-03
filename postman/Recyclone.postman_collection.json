@@ -44,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Papers\",\n    \"items\": [\n        {\n            \"id\": \"2\",\n            \"name\": \"Cardboards\"\n        },\n        {\n            \"name\": \"Books\"\n        }\n    ]\n}",
+							"raw": "{\n    \"name\": \"Paper\",\n    \"imageLocation\": \"image/categories/Papers.jpg\",\n    \"items\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"Newspapers\",\n            \"imageLocation\": \"image/categories/Newspapers.jpg\",\n            \"description\": \"Newspapers are papers\",\n            \"metric\": \"kg\"\n        },\n        {\n            \"id\": \"2\",\n            \"name\": \"Cardboards\",\n            \"imageLocation\": \"image/categories/Cardboards.jpg\",\n            \"description\": \"Cardboards are papers\",\n            \"metric\": \"oz\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
