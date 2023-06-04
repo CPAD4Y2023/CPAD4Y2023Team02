@@ -1,7 +1,7 @@
-import 'package:app/model/cartModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../data_constants/categories-data.dart';
+import '../model/cartModel.dart';
 
 class CategoriesCard extends StatefulWidget {
   const CategoriesCard({super.key, required this.categoryItem});
@@ -16,6 +16,7 @@ class _CategoriesCardState extends State<CategoriesCard> {
 
   @override
   Widget build(BuildContext context) {
+    
       return Container(
         margin: const EdgeInsets.fromLTRB(3.5, 0, 10, 18),
         padding: const EdgeInsets.fromLTRB(20, 18, 10, 18),
@@ -50,8 +51,7 @@ class _CategoriesCardState extends State<CategoriesCard> {
               setState(() {
                 isAddedToCart = !isAddedToCart;
               });
-              _showToast(context, isAddedToCart, widget.categoryItem.name);
-              Provider.of<CartViewModel>(context, listen: false).addCartItem(widget.categoryItem);
+              _onItemClick(context, isAddedToCart, widget.categoryItem);
             },
           ),
         ]),
@@ -70,3 +70,12 @@ void _showToast(BuildContext context, bool isAddedToCart, name) {
       ),
     );
   }
+
+void _onItemClick(BuildContext context, bool isAddedToCart, CategoryItem categoryItem) {
+  _showToast(context, isAddedToCart, categoryItem.name);
+  if(isAddedToCart) {
+    Provider.of<CartViewModel>(context, listen: false).addCartItem(categoryItem);
+  } else {
+    Provider.of<CartViewModel>(context, listen: false).removeCartItem(categoryItem);
+  }
+}

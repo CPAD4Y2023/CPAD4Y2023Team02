@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data_constants/products-data.dart';
-import 'product_categories/battery.dart';
+import 'product_categories/products.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

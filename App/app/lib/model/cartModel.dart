@@ -7,7 +7,12 @@ class CartViewModel extends ChangeNotifier {
   List<CategoryItem> get cartItem => _cartItem;
 
   void addCartItem (CategoryItem cartItemToBeAdded) {
-    _cartItem.add(cartItemToBeAdded);
+    _cartItem.insert(0, cartItemToBeAdded);
+    notifyListeners();
+  }
+
+  void removeCartItem (CategoryItem cartItemToBeRemoved) {
+    _cartItem.remove(cartItemToBeRemoved);
     notifyListeners();
   }
 }
