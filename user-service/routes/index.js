@@ -4,9 +4,9 @@ const users = require("../controller/User.controller.js");
 
 
 /* GET home page. */
-router.get('/user', users.findOne)
-  .put('/user', users.update)
-  .patch('/user', users.update)
-  .delete('/user', users.delete);
+router.get('/api/v1/user', users.findOne)
+  .put('/api/v1/user', users.update)
+  .patch('/api/v1/user', users.update)
+  .delete('/api/v1/user', users.delete);
 
 module.exports = router;
