@@ -8,8 +8,6 @@ const userSchema = {
   "properties": {
     "id": { "type": "string" },
     "address": { "type": "string" },
-    "latitude": { "type": "string" },
-    "longitude": { "type": "string" },
     "role": {
       "type": "string",
       "enum": ["ADMIN", "RECYCLER", "CONSUMER"]
@@ -23,46 +21,6 @@ function appendHeaders(req, data) {
   return data
 }
 
-// Create and Save a new user
-exports.create = (req, res) => {
-  const user = {
-    id: req.headers['x-userid'],
-    address: req.body.address,
-    latitude: req.body.latitude,
-    longitude: req.body.longitude,
-    role: req.body.role ? req.body.role : "CONSUMER"
-  };
-
-  let checkValid = v.validate(user, userSchema)
-  if (checkValid.valid) {
-    // Save Tutorial in the database
-    User.create(user)
-      .then((data) => {
-        data = appendHeaders(req, data)
-        res.status(201).send(data);
-      })
-      .catch((err) => {
-        if (err.name === 'SequelizeUniqueConstraintError') {
-          res.status(409).send({
-            message: "User data already exists"
-          })
-          return
-        }
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Tutorial.",
-        });
-      });
-  } else {
-    console.log(checkValid)
-    res.status(400).send({
-      message:
-        checkValid.errors
-    });
-    return
-  }
-};
-
 // Find a single user with an id
 exports.findOne = (req, res) => {
   const id = req.headers['x-userid'];
@@ -72,10 +30,33 @@ exports.findOne = (req, res) => {
       if (data) {
         data = appendHeaders(req, data)
         res.send(data);
+        return
       } else {
-        res.status(404).send({
-          message: `Cannot find user with id ${id}.`
-        });
+        const user = {
+          id: req.headers['x-userid'],
+          address: req.body.address,
+        };
+        // Save Tutorial in the database
+        User.create(user)
+          .then((data) => {
+            data = appendHeaders(req, data)
+            data["dataValues"]["role"] = null
+            data["dataValues"]["address"] = null
+            res.status(201).send(data);
+            return
+          })
+          .catch((err) => {
+            if (err.name === 'SequelizeUniqueConstraintError') {
+              res.status(409).send({
+                message: "User data already exists"
+              })
+              return
+            }
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while creating the Tutorial.",
+            });
+          });
       }
     })
     .catch(err => {
@@ -97,8 +78,6 @@ exports.update = (req, res) => {
   }
   const user = {
     address: req.body.address,
-    latitude: req.body.latitude,
-    longitude: req.body.longitude,
     role: req.body.role
   };
 
