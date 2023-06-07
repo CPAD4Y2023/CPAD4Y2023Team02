@@ -17,7 +17,7 @@ spec:
         app: recylone-approuter
     spec:
       containers:
-        - image: sapse/approuter:13.1.1
+        - image: docker.io/gourabsap/approuter:0.0.3
           imagePullPolicy: IfNotPresent
           name: approuter
           ports:
@@ -32,15 +32,15 @@ spec:
               cpu: "100m"
           env:
             - name: destinations
-              value: '[{"name":"http-backend","url":"http://hello-world"}]'
+              value: '[{"name":"user-service","url":"http://recylone-user-service"},{"name":"category-service","url":"http://recylone-catalog-service"},{"name":"request-manage-service","url":"http://recylone-request-manage-service"}]'
             - name: SESSION_TIMEOUT
               value: "60"
           volumeMounts:
-            - mountPath: "/app/default-env.json"
+            - mountPath: "/approuter/default-env.json"
               name: default-env
               subPath: default-env.json
               readOnly: true
-            - mountPath: "/app/xs-app.json"
+            - mountPath: "/approuter/xs-app.json"
               name: approuter-config
               subPath: xs-app.json
               readOnly: true

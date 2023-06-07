@@ -7,10 +7,8 @@ ar.beforeRequestHandler.use('/', function myMiddleware(req, res, next) {
   let token, decoded;
   if(req.user){
     token = req.user.token.accessToken
-  } else if (req.rawHeaders[1].includes("Bearer")){
-    token = req.rawHeaders[1].replace("Bearer ", "")
   } else {
-    res.status(401).json({ error: 'Unauthorised' })
+    token = req.session.user.token.accessToken
   }
   decoded = jwt_decode(token);
   req.headers['x-firstname'] = decoded.given_name;

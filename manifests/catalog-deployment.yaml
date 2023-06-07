@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: recylone-catalog-service
+  name: recylone-catalog-service
+  namespace: recyclone-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recylone-catalog-service
+  template:
+    metadata:
+      namespace: recyclone-dev
+      labels:
+        app: recylone-catalog-service
+    spec:
+      containers:
+        - image: gourabsap/catalog-service:0.0.3
+          imagePullPolicy: IfNotPresent
+          name: catalog-service
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "100m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          env:
+            - name: HOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: HOST
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: USER
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: PASSWORD
+            - name: DB
+              value: "catalog-service"
+      volumes:
+        - name: db-secret
+          secret:
+            secretName: db-secret
