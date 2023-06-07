@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "9138ecdc-3de0-43ec-bcc9-7beb206e5ad3",
+		"_postman_id": "8225ec11-2c05-44f1-8be7-6fdbb63e36ab",
 		"name": "Recyclone",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10045412"
 	},
 	"item": [
 		{
@@ -12,7 +13,13 @@
 					"name": "Create Category",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"name\": \"Paper\",\n    \"imageLocation\": \"image/categories/Papers.jpg\",\n    \"items\": [\n        {\n            \"name\": \"Newspapers\",\n            \"imageLocation\": \"image/categories/Newspapers.jpg\",\n            \"description\": \"Newspapers are papers\",\n            \"metric\": \"kg\"\n        },\n        {\n            \"name\": \"Cardboards\",\n            \"imageLocation\": \"image/categories/Cardboards.jpg\",\n            \"description\": \"Cardboards are papers\",\n            \"metric\": \"oz\"\n        }\n    ]\n}",
@@ -23,11 +30,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/categories",
+							"raw": "{{URL}}/api/v1/categories",
 							"host": [
-								"localhost"
+								"{{URL}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -41,7 +47,13 @@
 					"name": "Update Category",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"name\": \"Paper\",\n    \"imageLocation\": \"image/categories/Papers.jpg\",\n    \"items\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"Newspapers\",\n            \"imageLocation\": \"image/categories/Newspapers.jpg\",\n            \"description\": \"Newspapers are papers\",\n            \"metric\": \"kg\"\n        },\n        {\n            \"id\": \"2\",\n            \"name\": \"Cardboards\",\n            \"imageLocation\": \"image/categories/Cardboards.jpg\",\n            \"description\": \"Cardboards are papers\",\n            \"metric\": \"oz\"\n        }\n    ]\n}",
@@ -52,11 +64,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/categories/1",
+							"raw": "{{URL}}/api/v1/categories/1",
 							"host": [
-								"localhost"
+								"{{URL}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -71,13 +82,18 @@
 					"name": "Get all categories",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:8080/api/v1/categories",
+							"raw": "{{URL}}/api/v1/categories",
 							"host": [
-								"localhost"
+								"{{URL}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -91,13 +107,18 @@
 					"name": "Get Category",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:8080/api/v1/categories/1",
+							"raw": "{{URL}}/api/v1/categories/1",
 							"host": [
-								"localhost"
+								"{{URL}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -112,13 +133,18 @@
 					"name": "Delete Category",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:8080/api/v1/categories/1",
+							"raw": "{{URL}}/api/v1/categories/1",
 							"host": [
-								"localhost"
+								"{{URL}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -232,51 +258,6 @@
 					"response": []
 				},
 				{
-					"name": "Create User Details",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.environment.set(\"USER_GUID\", pm.response.json().id);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-approuter-authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"address\": \"This is a test address\",\n    \"latitude\": \"12.978484\",\n    \"longitude\": \"77.715610\",\n    \"role\": \"RECYCLER\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/api/user/",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"api",
-								"user",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get User Details ",
 					"request": {
 						"method": "GET",
@@ -288,14 +269,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{URL}}/api/user/",
+							"raw": "{{URL}}/api/v1/user",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"api",
-								"user",
-								""
+								"v1",
+								"user"
 							]
 						}
 					},
@@ -314,7 +295,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address\": \"This is a test address2\"\n}",
+							"raw": "{\n    \"role\": \"RECYCLER\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -322,13 +303,192 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/api/user/",
+							"raw": "{{URL}}/api/user",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"api",
-								"user",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete request",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/user",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Request Manage Service",
+			"item": [
+				{
+					"name": "Create Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[   \n    {\n    \"categoryId\" : \"103\",\n    \"categoryName\": \"Paper\",\n    \"metricQuantity\": 2,\n    \"vendorId\": \"01\",\n    \"metric\": \"kg\",\n    \"price\": 1\n    },\n    {\n    \"categoryId\" : \"104\",\n    \"categoryName\": \"Plastic\",\n    \"vendorId\": \"01\",\n    \"metricQuantity\": 2,\n    \"metric\": \"kg\",\n    \"price\": 1\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/manageRequest/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"manageRequest",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Request for Req Id Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/manageRequest/4221b427-bdbb-4556-ae2a-5fc0e576b634/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"manageRequest",
+								"4221b427-bdbb-4556-ae2a-5fc0e576b634",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Request for that user/vendor (using userId) Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/manageRequest/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"manageRequest",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update request Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\" :\"On Hold\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/manageRequest/4221b427-bdbb-4556-ae2a-5fc0e576b634/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"manageRequest",
+								"4221b427-bdbb-4556-ae2a-5fc0e576b634",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Request Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/manageRequest/4221b427-bdbb-4556-ae2a-5fc0e576b634/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"manageRequest",
+								"4221b427-bdbb-4556-ae2a-5fc0e576b634",
 								""
 							]
 						}
