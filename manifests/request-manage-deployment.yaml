@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: recylone-request-manage-service
+  name: recylone-request-manage-service
+  namespace: recyclone-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recylone-request-manage-service
+  template:
+    metadata:
+      namespace: recyclone-dev
+      labels:
+        app: recylone-request-manage-service
+    spec:
+      containers:
+        - image: gourabsap/request-manage-service:0.0.3
+          imagePullPolicy: IfNotPresent
+          name: request-manage-service
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              memory: "200Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "100m"
+          env:
+            - name: HOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: HOST
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: USER
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: PASSWORD
+            - name: DIALECT
+              value: "mysql"
+            - name: POOL_MAX
+              value: "5"
+            - name: POOL_MIN
+              value: "0"
+            - name: DB
+              value: "request-manage-service"
+      volumes:
+        - name: db-secret
+          secret:
+            secretName: db-secret

@@ -5,9 +5,21 @@ data:
       "authenticationMethod": "route",
       "routes": [
         {
-          "source": "^/api/(.*)$",
-          "target": "/$1",
-          "destination": "http-backend",
+          "source": "^/api/v1/user(.*)$",
+          "target": "/api/v1/user$1",
+          "destination": "user-service",
+          "authenticationType": "xsuaa"
+        },
+        {
+          "source": "^/api/v1/categories(.*)$",
+          "target": "/api/v1/categories$1",
+          "destination": "category-service",
+          "authenticationType": "xsuaa"
+        },
+        {
+          "source": "^/api/v1/manageRequest(.*)$",
+          "target": "/manageRequest$1",
+          "destination": "request-manage-service",
           "authenticationType": "xsuaa"
         },
         {

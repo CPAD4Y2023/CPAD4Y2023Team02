@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));   // parse URL- encoded reques
 
 const db = require("./models");
 
-db.sequelize.sync({ force: true })
+db.sequelize.sync({ force: false })
     .then(() => {
         winston.info("Database Synced Successfully");
     })
