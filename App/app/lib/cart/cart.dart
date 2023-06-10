@@ -28,7 +28,7 @@ class _CartState extends State<Cart> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.fromLTRB(25, 70, 25, 20),
+              margin: const EdgeInsets.fromLTRB(25, 82, 25, 20),
               padding: const EdgeInsets.all(25),
               decoration: BoxDecoration(
               color: Colors.white,
@@ -104,12 +104,24 @@ class _CartState extends State<Cart> {
             ),
 
             // order list
-            Column(children: [
-              const Text("Create Order"),
-              SingleChildScrollView(
-                child: buildAddedItems(viewModel.cartItem),
-              )
-            ],)
+            const SizedBox(height: 16),
+            Container(
+              margin: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+              child: Text(
+                "Items added",
+                style: TextStyle(fontSize: 15, color: Color(int.parse("0xff555555"))),
+              ),
+            ),
+            const SizedBox(height: 7),
+            Expanded(
+              child: ListView(
+                children: [
+                  SingleChildScrollView(
+                    child: buildAddedItems(viewModel.cartItem),
+                  ),
+                ],
+              ),
+            )
 
 
           ],
@@ -122,8 +134,42 @@ class _CartState extends State<Cart> {
 
 Widget buildAddedItems(List<CategoryItem> addedItems) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: addedItems.map((addedItem) {
-      return Text(addedItem.name);
+      int index = addedItems.indexOf(addedItem);
+      return Container(
+        margin: const EdgeInsets.fromLTRB(25, 0, 25, 20),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [BoxShadow(
+              blurRadius: 7.0,
+              color: Color.fromRGBO(0, 0, 0, 0.1),
+              offset: Offset(2.0,2.0)
+            )],
+          ),
+        child: Row(children: [
+          Text("${index+1}. ${addedItem.name} (in ${addedItem.metric})"),
+          const Spacer(),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.add_circle_outline),
+            color: Color(int.parse("0xff777777")),
+          ),
+          const SizedBox(
+            width: 44,
+            child: TextField(
+            keyboardType: TextInputType.number,
+          ),),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.remove_circle_outline),
+            color: Color(int.parse("0xff777777"))
+          ),
+          // const SizedBox(width: 20),
+        ],),
+      );
     }).toList(),
   );
 }

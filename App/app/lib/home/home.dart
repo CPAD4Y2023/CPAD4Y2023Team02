@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(17, 70, 0, 0),
+        padding: const EdgeInsets.fromLTRB(17, 82, 0, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
               style: TextStyle(color: Color(int.parse("0xff9B9B9B")))
             ),
 
-            const SizedBox(height: 70),
+            const SizedBox(height: 64),
             Text(
               "Products",
               style: TextStyle(fontSize: 16, color: Color(int.parse("0xff555555"))),
@@ -115,7 +115,7 @@ Widget cardBuilder(List<Product> productList, PageController pageController, int
       splashColor: Colors.transparent,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.fromLTRB(10, 0, 10, 20),
         height: 134,
         width: 110,
         decoration: BoxDecoration(
