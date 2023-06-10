@@ -15,4 +15,16 @@ class CartViewModel extends ChangeNotifier {
     _cartItem.remove(cartItemToBeRemoved);
     notifyListeners();
   }
+  
+  void updateQuantity (String itemId, CategoryItem modifiedItem) {
+    int index=0;
+    for(var item in _cartItem) {
+      if(item.id == itemId) {
+        _cartItem[index] = modifiedItem;
+        break;
+      }
+      ++index;
+    }
+    notifyListeners();
+  }
 }

@@ -17,10 +17,8 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Container(
       child: Consumer<CartViewModel>(builder: (context, viewModel, child) {
-        // String name = viewModel.cartItem[0].name;
-
         bool isCartEmpty = viewModel.cartItem.isEmpty;
-        String totalWeight = isCartEmpty? "--": 2.toString();
+        String totalWeight = isCartEmpty? "--": getTotalWeightInKg(viewModel.cartItem).toString();
         String totalOrderQuantity = isCartEmpty? "--": viewModel.cartItem.length.toString();
         String pickupDate = "20 jun";
 
@@ -117,13 +115,11 @@ class _CartState extends State<Cart> {
               child: ListView(
                 children: [
                   SingleChildScrollView(
-                    child: buildAddedItems(viewModel.cartItem),
+                    child: buildAddedItems(context, viewModel.cartItem),
                   ),
                 ],
               ),
             )
-
-
           ],
         );
       }),
@@ -132,11 +128,15 @@ class _CartState extends State<Cart> {
 }
 
 
-Widget buildAddedItems(List<CategoryItem> addedItems) {
+Widget buildAddedItems(BuildContext context, List<CategoryItem> addedItems) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: addedItems.map((addedItem) {
+
       int index = addedItems.indexOf(addedItem);
+      var inputTextController = TextEditingController();
+      inputTextController.text = addedItem.quantity.toString();
+
       return Container(
         margin: const EdgeInsets.fromLTRB(25, 0, 25, 20),
         padding: const EdgeInsets.all(16),
@@ -150,26 +150,73 @@ Widget buildAddedItems(List<CategoryItem> addedItems) {
             )],
           ),
         child: Row(children: [
-          Text("${index+1}. ${addedItem.name} (in ${addedItem.metric})"),
+          Text(
+            "${index+1}. ${addedItem.name} (in ${addedItem.metric})",
+            style: TextStyle(
+              color: Color(int.parse("0xff555555")),
+            ),
+          ),
           const Spacer(),
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add_circle_outline),
+            onPressed: () {
+              _onQuantityChange(context, addedItems, addedItem, "-", inputTextController, "");
+            },
+            icon: const Icon(Icons.remove_circle_outline),
             color: Color(int.parse("0xff777777")),
           ),
-          const SizedBox(
-            width: 44,
+          SizedBox(
+            width: 50,
             child: TextField(
-            keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              controller: inputTextController,
+              onChanged: (text) {
+                _onQuantityChange(context, addedItems, addedItem, "onChange", inputTextController, text);
+              },
+              keyboardType: TextInputType.number,
           ),),
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.remove_circle_outline),
+            onPressed: () {
+              _onQuantityChange(context, addedItems, addedItem, "+", inputTextController, "");
+            },
+            icon: const Icon(Icons.add_circle_outline),
             color: Color(int.parse("0xff777777"))
           ),
-          // const SizedBox(width: 20),
         ],),
       );
     }).toList(),
   );
+}
+
+_onQuantityChange(BuildContext context, List<CategoryItem> addedItems, CategoryItem addedItem, String operator, TextEditingController inputTextController,String text) {
+  int index = addedItems.indexOf(addedItem);
+  List<CategoryItem> newAddedItem = addedItems;
+  int quantity = addedItem.quantity;
+  String idOfChangedItem = addedItem.id;
+
+  for(var item in addedItems) {
+    if(item.id == idOfChangedItem) {
+      if(operator == "+") {
+        newAddedItem[index].quantity = quantity+1;
+        inputTextController.text = newAddedItem[index].quantity.toString();
+      } else if(operator == "-" && quantity>0) {
+        newAddedItem[index].quantity = quantity-1;
+        inputTextController.text = newAddedItem[index].quantity.toString();
+      } else if(operator == "onChange") {
+        newAddedItem[index].quantity = int.parse(text.isNotEmpty? text: '0');
+        inputTextController.text = text;
+      }
+    }
+  }
+
+  Provider.of<CartViewModel>(context, listen: false).updateQuantity(idOfChangedItem, newAddedItem[index]);
+}
+
+int getTotalWeightInKg(List<CategoryItem> addedItems) {
+  int totalWeightInKg = 0;
+  for(var addedItem in addedItems) {
+    if(addedItem.metric == "Kg") {
+      totalWeightInKg = totalWeightInKg + addedItem.quantity;
+    }
+  }
+  return totalWeightInKg;
 }
