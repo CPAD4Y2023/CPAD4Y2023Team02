@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'cart/cart.dart';
 import 'home/home.dart';
 
 class Skeleton extends StatefulWidget {
@@ -17,10 +18,7 @@ class _SkeletonState extends State<Skeleton> {
 
   static const List<Widget> _widgetOptions = <Widget> [
     Home(),
-    Text(
-      'Index 1: Cart',
-      style: optionStyle,
-    ),
+    Cart(),
     Text(
       'Index 2: Orders',
       style: optionStyle,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../data_constants/categories-data.dart';
+import '../model/cartModel.dart';
 
 class CategoriesCard extends StatefulWidget {
   const CategoriesCard({super.key, required this.categoryItem});
@@ -10,11 +12,17 @@ class CategoriesCard extends StatefulWidget {
 }
 
 class _CategoriesCardState extends State<CategoriesCard> {
-  bool isAddedToCart = false;
 
   @override
   Widget build(BuildContext context) {
+    
       return Container(
+      child: Consumer<CartViewModel>(builder: (context, viewModel, child) {
+        List<CategoryItem> cartItem = viewModel.cartItem;
+        CategoryItem categoryItem = widget.categoryItem;
+        bool isAddedToCart = getIsActive(cartItem, categoryItem);
+
+        return Container(
         margin: const EdgeInsets.fromLTRB(3.5, 0, 10, 18),
         padding: const EdgeInsets.fromLTRB(20, 18, 10, 18),
         decoration: BoxDecoration(
@@ -29,12 +37,12 @@ class _CategoriesCardState extends State<CategoriesCard> {
         child: Row(children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-            child: Image.asset(widget.categoryItem.imageLocation, height: 50),
+            child: Image.asset(categoryItem.imageLocation, height: 50),
           ),
           Flexible(
             child:Text(
               softWrap: true,
-              widget.categoryItem.description,
+              categoryItem.description,
               style: TextStyle(color: Color(int.parse("0xff777777"))),
             ),
           ),
@@ -48,22 +56,46 @@ class _CategoriesCardState extends State<CategoriesCard> {
               setState(() {
                 isAddedToCart = !isAddedToCart;
               });
-              _showToast(context, isAddedToCart, widget.categoryItem.categoryName);
+              _onItemClick(context, isAddedToCart, categoryItem);
             },
           ),
         ]),
       );
+    }));
   }
 }
 
-void _showToast(BuildContext context, bool isAddedToCart, categoryName) {
+void _showToast(BuildContext context, bool isAddedToCart, name) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
         content: Text(
-          isAddedToCart? "$categoryName added to cart": "$categoryName removed from cart",
+          isAddedToCart? "$name added to cart": "$name removed from cart",
         ),
+        duration: const Duration(milliseconds: 490),
         action: SnackBarAction(label: 'Dismiss', onPressed: scaffold.hideCurrentSnackBar),
       ),
     );
   }
+
+void _onItemClick(BuildContext context, bool isAddedToCart, CategoryItem categoryItem) {
+  _showToast(context, isAddedToCart, categoryItem.name);
+  if(isAddedToCart) {
+    categoryItem.quantity = 0;
+    Provider.of<CartViewModel>(context, listen: false).addCartItem(categoryItem);
+  } else {
+    Provider.of<CartViewModel>(context, listen: false).removeCartItem(categoryItem);
+  }
+}
+
+bool getIsActive(List<CategoryItem> cartItem, CategoryItem currentCategory) {
+  if(cartItem.isEmpty) {
+    return false;
+  }
+  for(var item in cartItem) {
+    if(item.id == currentCategory.id) {
+      return true;
+    }
+  }
+  return false;
+}
