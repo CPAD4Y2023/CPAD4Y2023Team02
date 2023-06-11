@@ -303,12 +303,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/api/user",
+							"raw": "{{URL}}/api/v1/user",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"user"
 							]
 						}
@@ -327,12 +328,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{URL}}/api/user",
+							"raw": "{{URL}}/api/v1/user",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"user"
 							]
 						}
@@ -490,6 +492,157 @@
 								"manageRequest",
 								"4221b427-bdbb-4556-ae2a-5fc0e576b634",
 								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vendor Service",
+			"item": [
+				{
+					"name": "Get Vendor By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () =>{\r",
+									"pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/vendor/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vendor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Vendor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jack\",\r\n    \"description\": \"Recyling store 2\",\r\n    \"itemDetails\": [\r\n        {\r\n            \"itemId\": 1,\r\n            \"price\": \"1000\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/vendor",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vendor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vendors By Category Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoryIds\": [\r\n        1,\r\n        2\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/vendor/category",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vendor",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vendor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () =>{\r",
+									"pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-approuter-authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/vendor",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vendor"
 							]
 						}
 					},

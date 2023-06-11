@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: recylone-vendor-service
+  name: recylone-vendor-service
+  namespace: recyclone-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recylone-vendor-service
+  template:
+    metadata:
+      namespace: recyclone-dev
+      labels:
+        app: recylone-vendor-service
+    spec:
+      containers:
+        - image: gourabsap/vendor-service:0.0.1
+          imagePullPolicy: IfNotPresent
+          name: vendor-service
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "100m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          env:
+            - name: HOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: HOST
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: USER
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: PASSWORD
+            - name: DB
+              value: "vendor-service"
+      volumes:
+        - name: db-secret
+          secret:
+            secretName: db-secret

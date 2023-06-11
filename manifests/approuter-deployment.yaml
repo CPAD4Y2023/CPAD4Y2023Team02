@@ -32,7 +32,7 @@ spec:
               cpu: "100m"
           env:
             - name: destinations
-              value: '[{"name":"user-service","url":"http://recylone-user-service"},{"name":"category-service","url":"http://recylone-catalog-service"},{"name":"request-manage-service","url":"http://recylone-request-manage-service"}]'
+              value: '[{"name":"user-service","url":"http://recylone-user-service"},{"name":"vendor-service","url":"http://recylone-vendor-service"},{"name":"category-service","url":"http://recylone-catalog-service"},{"name":"request-manage-service","url":"http://recylone-request-manage-service"}]'
             - name: SESSION_TIMEOUT
               value: "60"
           volumeMounts:
