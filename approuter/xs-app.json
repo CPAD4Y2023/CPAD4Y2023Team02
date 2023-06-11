@@ -14,6 +14,12 @@
       "authenticationType": "xsuaa"
     },
     {
+      "source": "^/api/v1/vendor(.*)$",
+      "target": "/api/v1/vendor$1",
+      "destination": "vendor-service",
+      "authenticationType": "xsuaa"
+    },
+    {
       "source": "^/api/v1/manageRequest(.*)$",
       "target": "/manageRequest$1",
       "destination": "request-manage-service",
