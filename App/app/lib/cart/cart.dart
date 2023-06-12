@@ -2,6 +2,7 @@ import 'package:app/model/cartModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../api/user_requests.dart';
 import '../data_constants/categories-data.dart';
 
 
@@ -105,12 +106,24 @@ class _CartState extends State<Cart> {
             const SizedBox(height: 16),
             Container(
               margin: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-              child: Text(
-                "Items added",
-                style: TextStyle(fontSize: 15, color: Color(int.parse("0xff555555"))),
-              ),
+              child: Row(children: [
+                Text(
+                  "Items added",
+                  style: TextStyle(fontSize: 15, color: Color(int.parse("0xff555555"))),
+                ),
+                const Spacer(),
+                OutlinedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                    overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 48, 138, 51)),
+                  ),
+                  child: const Text("Create Order"),
+                )
+              ],),
             ),
-            const SizedBox(height: 7),
+            const SizedBox(height: 5),
             Expanded(
               child: ListView(
                 children: [
@@ -218,5 +231,6 @@ int getTotalWeightInKg(List<CategoryItem> addedItems) {
       totalWeightInKg = totalWeightInKg + addedItem.quantity;
     }
   }
+  getUserDetailsOnLogin();
   return totalWeightInKg;
 }
