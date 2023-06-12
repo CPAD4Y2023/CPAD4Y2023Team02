@@ -2,7 +2,6 @@ import 'package:app/model/cartModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../api/user_requests.dart';
 import '../data_constants/categories-data.dart';
 
 
@@ -18,9 +17,10 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Container(
       child: Consumer<CartViewModel>(builder: (context, viewModel, child) {
-        bool isCartEmpty = viewModel.cartItem.isEmpty;
-        String totalWeight = isCartEmpty? "--": getTotalWeightInKg(viewModel.cartItem).toString();
-        String totalOrderQuantity = isCartEmpty? "--": viewModel.cartItem.length.toString();
+        List<CategoryItem> cartItems = viewModel.cartItem;
+        bool isCartEmpty = cartItems.isEmpty;
+        String totalWeight = isCartEmpty? "--": getTotalWeightInKg(cartItems).toString();
+        String totalOrderQuantity = isCartEmpty? "--": cartItems.length.toString();
         String pickupDate = "20 jun";
 
         return Column(
@@ -105,7 +105,7 @@ class _CartState extends State<Cart> {
             // order list
             const SizedBox(height: 16),
             Container(
-              margin: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+              margin: const EdgeInsets.fromLTRB(28, 0, 28, 0),
               child: Row(children: [
                 Text(
                   "Items added",
@@ -113,7 +113,9 @@ class _CartState extends State<Cart> {
                 ),
                 const Spacer(),
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    createOrder(cartItems);
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -128,7 +130,7 @@ class _CartState extends State<Cart> {
               child: ListView(
                 children: [
                   SingleChildScrollView(
-                    child: buildAddedItems(context, viewModel.cartItem),
+                    child: buildAddedItems(context, cartItems),
                   ),
                 ],
               ),
@@ -231,6 +233,10 @@ int getTotalWeightInKg(List<CategoryItem> addedItems) {
       totalWeightInKg = totalWeightInKg + addedItem.quantity;
     }
   }
-  getUserDetailsOnLogin();
+  // getUserDetailsOnLogin();
   return totalWeightInKg;
+}
+
+void createOrder(List<CategoryItem> cartItems) {
+  // create order
 }
