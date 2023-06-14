@@ -303,12 +303,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/api/user",
+							"raw": "{{URL}}/api/v1/user",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"user"
 							]
 						}
@@ -327,12 +328,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{URL}}/api/user",
+							"raw": "{{URL}}/api/v1/user",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"user"
 							]
 						}
