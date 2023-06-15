@@ -33,11 +33,6 @@ public class Commons {
         .collect(Collectors.toList());
   }
 
-  public static <S, D> D mapModel(final S source, D destination) {
-    modelMapper.map(source, destination);
-    return destination;
-  }
-
   public static void validateNumericId(String id) throws BadRequestException {
     if (!StringUtils.hasText(id))
       throw new BadRequestException(Constants.ID_CAN_NOT_BE_EMPTY.getName());

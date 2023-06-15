@@ -15,7 +15,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Item {
@@ -33,6 +33,6 @@ public class Item {
   private String metric;
 
   @ManyToOne
-  @JoinColumn(name = "category", referencedColumnName = "id", nullable = false)
+  @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
   private Category category;
 }

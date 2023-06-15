@@ -8,7 +8,6 @@ import com.cpad.catalog.dtos.response.CategoryResponse;
 import com.cpad.catalog.entities.Category;
 import com.cpad.catalog.entities.Item;
 import com.cpad.catalog.exceptions.child.CategoryAlreadyExistsException;
-import com.cpad.catalog.exceptions.child.ItemAlreadyExistsException;
 import com.cpad.catalog.exceptions.parent.BadRequestException;
 import com.cpad.catalog.exceptions.parent.NotFoundException;
 import com.cpad.catalog.repositories.CategoryRepository;
@@ -163,7 +162,7 @@ public class CategoryService {
         categoryRepository.existsByNameIgnoreCaseAndIdNotIn(
             updateCategoryRequest.getName(), List.of(category.getId()));
     if (categoryNameAlreadyPresent)
-      throw new ItemAlreadyExistsException(
+      throw new CategoryAlreadyExistsException(
           String.format(
               Constants.CATEGORY_ALREADY_EXISTS_EXCEPTION.getName(),
               updateCategoryRequest.getName()));
