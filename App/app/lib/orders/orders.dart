@@ -196,53 +196,50 @@ class _OrderBuilderState extends State<OrderBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return Orders(orderItems: getDummyData());
-    // return FutureBuilder<List<OrderItems>>(
-    //     future: _calculation, // a previously-obtained Future<String> or null
-    //     builder: (BuildContext context, AsyncSnapshot<List<OrderItems>> snapshot) {
-    //       Widget children;
-    //       if (snapshot.hasData) {
-    //         children = Center(
-    //         child: Column(
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           children: [
-    //           const Icon(
-    //             Icons.check_circle_outline,
-    //             color: Colors.green,
-    //             size: 60,
-    //           ),
-    //           Padding(
-    //             padding: const EdgeInsets.only(top: 16),
-    //             child: Text(
-    //               'Result: ${snapshot.data}',
-    //               textAlign: TextAlign.center,
-    //             ),
-    //           ),
-    //         ]));
-    //       } else if (snapshot.hasError) {
-    //         children = Orders(orderItems: getDummyData());
-    //       } else {
-    //         children = const Center(
-    //         child: Column(
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           children: [
-    //           SizedBox(
-    //             width: 60,
-    //             height: 60,
-    //             child: CircularProgressIndicator(),
-    //           ),
-    //           Padding(
-    //             padding: EdgeInsets.only(top: 16),
-    //             child: Text(
-    //               'Loading your orders...',
-    //               textAlign: TextAlign.center,
-    //             ),
-    //           ),
-    //         ]));
-    //       }
-    //       return children;
-    //     },
-    //   );
+    // return Orders(orderItems: getDummyData());
+    return FutureBuilder<List<OrderItems>>(
+        future: _calculation, // a previously-obtained Future<String> or null
+        builder: (BuildContext context, AsyncSnapshot<List<OrderItems>> snapshot) {
+          Widget children;
+          if (snapshot.hasData) {
+            // children = Orders(orderItems: getDummyData());
+            children = Orders(orderItems: snapshot.data??[]);
+          } else if (snapshot.hasError) {
+            children = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Error: ${snapshot.error}'),
+              ),
+            ]);
+          } else {
+            children = const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text(
+                  'Loading your orders...',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ]));
+          }
+          return children;
+        },
+      );
   }
 }
 
