@@ -1,4 +1,4 @@
-import 'package:app/data_constants/categories-data.dart';
+import 'package:app/data_constants/categories_data.dart';
 import 'package:flutter/material.dart';
 
 class CartViewModel extends ChangeNotifier {

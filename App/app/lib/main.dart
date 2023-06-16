@@ -1,4 +1,4 @@
-import 'package:app/model/cartModel.dart';
+import 'package:app/model/cart_model.dart';
 import 'package:app/skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

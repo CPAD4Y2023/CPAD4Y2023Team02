@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data_constants/products-data.dart';
+import '../data_constants/products_data.dart';
 import 'product_categories/products.dart';
 
 class Home extends StatefulWidget {

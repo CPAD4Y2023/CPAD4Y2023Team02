@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:app/api/api_env.dart';
 import 'package:app/api/utils.dart';
 import 'package:dio/dio.dart';
 
-import '../model/authModel.dart';
+import '../model/auth_model.dart';
 
 BaseOptions options = BaseOptions(
     baseUrl: BASE_URL,
@@ -25,9 +26,10 @@ Future<void> getUserDetailsOnLogin() async {
   print(response.data.toString());
 }
 
-Future<void> createOrder() async {
+Future<void> sendOrder(List<Map<String, dynamic>> orderItems) async {
   // remove afterwards
   await saveToken();
+  var body = jsonEncode(orderItems);
   
   final token = await getToken();
   HttpOverrides.global = CustomHttpOverrides();
@@ -37,7 +39,7 @@ Future<void> createOrder() async {
 
   Response<dynamic> response = await dio.post(
     "/manageRequest",
-    data: 
+    data: body,
   );
 
   print(response.data.toString());

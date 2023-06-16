@@ -1,8 +1,10 @@
-import 'package:app/model/cartModel.dart';
+import 'package:app/data_constants/cart_items.dart';
+import 'package:app/model/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data_constants/categories-data.dart';
+import '../api/user_requests.dart';
+import '../data_constants/categories_data.dart';
 
 
 class Cart extends StatefulWidget {
@@ -19,7 +21,8 @@ class _CartState extends State<Cart> {
       child: Consumer<CartViewModel>(builder: (context, viewModel, child) {
         List<CategoryItem> cartItems = viewModel.cartItem;
         bool isCartEmpty = cartItems.isEmpty;
-        String totalWeight = isCartEmpty? "--": getTotalWeightInKg(cartItems).toString();
+        String totalWeight = isCartEmpty? "--": getTotalWeightInKg(cartItems)["totalWeightInKg"].toString();
+        String totalOrderPrice = isCartEmpty? "--": getTotalWeightInKg(cartItems)["totalPrice"].toString();
         String totalOrderQuantity = isCartEmpty? "--": cartItems.length.toString();
         String pickupDate = "20 jun";
 
@@ -89,10 +92,10 @@ class _CartState extends State<Cart> {
                               size: 18,
                             ),
                             Text(
-                              "100",
+                              totalOrderPrice,
                               style: TextStyle(fontSize: 35, color: Color(int.parse("0xff1F9500"))),
                             ),
-                            const SizedBox(width: 14)
+                            const SizedBox(width: 12.5)
                           ],)
                         ],),
                       )
@@ -226,17 +229,25 @@ _onQuantityChange(BuildContext context, List<CategoryItem> addedItems, CategoryI
   Provider.of<CartViewModel>(context, listen: false).updateQuantity(idOfChangedItem, newAddedItem[index]);
 }
 
-int getTotalWeightInKg(List<CategoryItem> addedItems) {
+Map<String, int> getTotalWeightInKg(List<CategoryItem> addedItems) {
   int totalWeightInKg = 0;
+  int totalPrice = 0;
   for(var addedItem in addedItems) {
     if(addedItem.metric == "Kg") {
       totalWeightInKg = totalWeightInKg + addedItem.quantity;
+      totalPrice = totalPrice + addedItem.pricePerKg*addedItem.quantity;
     }
   }
-  // getUserDetailsOnLogin();
-  return totalWeightInKg;
+  return {
+    "totalWeightInKg": totalWeightInKg,
+    "totalPrice": totalPrice,
+  };
 }
 
 void createOrder(List<CategoryItem> cartItems) {
-  // create order
+  orderItems.clear();
+  for(var cartItem in cartItems) {
+    orderItems.add(CartItem(categoryId: cartItem.id, price: 2, categoryName: cartItem.name, metric:cartItem.metric, metricQuantity: cartItem.quantity, vendorId: "01").toJson());
+  }
+  sendOrder(orderItems);
 }

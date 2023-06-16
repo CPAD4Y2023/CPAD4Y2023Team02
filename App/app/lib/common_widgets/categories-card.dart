@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../data_constants/categories-data.dart';
-import '../model/cartModel.dart';
+import '../data_constants/categories_data.dart';
+import '../model/cart_model.dart';
 
 class CategoriesCard extends StatefulWidget {
   const CategoriesCard({super.key, required this.categoryItem});
