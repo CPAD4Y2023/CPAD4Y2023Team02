@@ -3,7 +3,6 @@ import 'package:app/model/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../api/user_requests.dart';
 import '../data_constants/categories_data.dart';
 
 
@@ -249,5 +248,5 @@ void createOrder(List<CategoryItem> cartItems) {
   for(var cartItem in cartItems) {
     orderItems.add(CartItem(categoryId: cartItem.id, price: 2, categoryName: cartItem.name, metric:cartItem.metric, metricQuantity: cartItem.quantity, vendorId: "01").toJson());
   }
-  sendOrder(orderItems);
+  // sendOrder(orderItems);
 }

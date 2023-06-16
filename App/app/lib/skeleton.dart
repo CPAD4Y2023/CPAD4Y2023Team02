@@ -1,3 +1,5 @@
+import 'package:app/orders/orders.dart';
+import 'package:app/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 import 'cart/cart.dart';
@@ -19,14 +21,8 @@ class _SkeletonState extends State<Skeleton> {
   static const List<Widget> _widgetOptions = <Widget> [
     Home(),
     Cart(),
-    Text(
-      'Index 2: Orders',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Profile',
-      style: optionStyle,
-    ),
+    OrderBuilder(),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
