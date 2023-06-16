@@ -1,4 +1,4 @@
-import 'package:app/model/cartModel.dart';
+import 'package:app/model/cart_model.dart';
 import 'package:app/skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CartViewModel>(create: (context) => CartViewModel(),
+    return MultiProvider(providers: [
+      ChangeNotifierProvider<CartViewModel>(create: (context) => CartViewModel()),
+    ],
       child: const MaterialApp(
         home: Skeleton(),
       ),

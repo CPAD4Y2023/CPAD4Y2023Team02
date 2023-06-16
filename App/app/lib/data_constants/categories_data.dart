@@ -5,8 +5,9 @@ class CategoryItem{
   final String name;
   final String metric;
   late int quantity;
+  final int pricePerKg;
 
-  CategoryItem({ required this.imageLocation, required this.id, required this.description, required this.name, required this.metric, required this.quantity});
+  CategoryItem({ required this.imageLocation, required this.id, required this.description, required this.name, required this.metric, required this.quantity, required this.pricePerKg});
 }
 
 List<CategoryItem> plasticCategory = [
@@ -16,6 +17,7 @@ List<CategoryItem> plasticCategory = [
     name: "PETE",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 4,
     description: "Thin and transparent bottles for water, juices, soft drinks, packaging for and vegetables and some type of cosmetics."
   ),
   CategoryItem(
@@ -24,6 +26,7 @@ List<CategoryItem> plasticCategory = [
     name: "HDPE",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 10,
     description: "Hard Opaque plastic bottles like milk jugs, laundry detergents, shampoo bottles, washing and shower soaps."
   ),
   CategoryItem(
@@ -32,6 +35,7 @@ List<CategoryItem> plasticCategory = [
     name: "PVC",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 8,
     description: "Plumbing items, medical tubing, pressure pipes, electrical cable insulation, outdoor furniture."
   ),
   CategoryItem(
@@ -40,6 +44,7 @@ List<CategoryItem> plasticCategory = [
     name: "LDPE",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 5,
     description: "This is ductile and mostly used in shopping bags, food containers, films or bags and stretch wrap."
   ),
   CategoryItem(
@@ -48,6 +53,7 @@ List<CategoryItem> plasticCategory = [
     name: "PP",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 5,
     description: "Disposable cutlery and tableware, laboratory equipment, automotive parts, medical devices and toys."
   ),
   CategoryItem(
@@ -56,6 +62,7 @@ List<CategoryItem> plasticCategory = [
     name: "PS",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 8,
     description: "Foam Packaging, Insulation materials, television remotes, CD, DVD, Office Supplies, Craft materials."
   ),
 ];
@@ -67,6 +74,7 @@ List<CategoryItem> batteryCategory = [
     name: "Lead acid Battery",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 12,
     description: "Automotive batteries, Motorcycle batteries, Emergency lighting batteries, Electric vehicle batteries."
   ),
   CategoryItem(
@@ -75,6 +83,7 @@ List<CategoryItem> batteryCategory = [
     name: "Lithium ion Battery",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 10,
     description: "Batteries from Smartphones, tablets, Laptops, cameras, power tools, wearable devices and power banks."
   ),
   CategoryItem(
@@ -83,6 +92,7 @@ List<CategoryItem> batteryCategory = [
     name: "Silver oxide Battery",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 7,
     description: "Batteries from Watches, calculators, medical devices, Electronic toys and small electronic devices."
   ),
 ];
@@ -94,6 +104,7 @@ List<CategoryItem> glassCategory = [
     name: "Glass",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 17,
     description: "Only colorless glasses like pickle jars, beverage bottles, perfume bottles, baby food jars, Sauce and oil jars."
   ),
 ];
@@ -105,6 +116,7 @@ List<CategoryItem> ewasteCategory = [
     name: "Large household ewaste",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 20,
     description: "Refrigerators, Freezers, Dishwashers, Heating and cooling units, microservices, washing machines."
   ),
   CategoryItem(
@@ -113,6 +125,7 @@ List<CategoryItem> ewasteCategory = [
     name: "It equipment ewaste",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 10,
     description: "Personal computers, laptops, monitors, keyboards, printers, gaming consoles, mobile phones, cameras."
   ),
   CategoryItem(
@@ -121,6 +134,7 @@ List<CategoryItem> ewasteCategory = [
     name: "Medical ewaste",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 14,
     description: "Radiotherapy equipment, Dialysis equipment, Ventilators, Scanners, Lab and Diagnostic equipment."
   ),
   CategoryItem(
@@ -129,6 +143,7 @@ List<CategoryItem> ewasteCategory = [
     name: "Lighting equipment ewaste",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 10,
     description: "LED lamps, Fluorescent lamps, High intensity discharge lamps, Sodium vapor lamps, Switches, Wires."
   ),
 ];
@@ -140,6 +155,7 @@ List<CategoryItem> paperCategory = [
     name: "Graphic paper",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 17,
     description: "products made from graphic paper, such as newspapers, notebooks, other printed products, and office paper."
   ),
   CategoryItem(
@@ -148,6 +164,7 @@ List<CategoryItem> paperCategory = [
     name: "Packaging paper",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 12,
     description: "Products made from packaging paper, such as transport packaging or secondary packaging."
   ),
 ];
@@ -159,6 +176,7 @@ List<CategoryItem> metalCategory = [
     name: "Iron",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 20,
     description: "Cooking items and cutlery, cloth hangers, curtain rods, garden tools, decorative items and some furniture."
   ),
   CategoryItem(
@@ -167,6 +185,7 @@ List<CategoryItem> metalCategory = [
     name: "Carbide",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 25,
     description: "Carbide is mainly used in Cutting tools, Aluminum Cans, Saw Blades, Industrial Sharpeners."
   ),
   CategoryItem(
@@ -175,6 +194,7 @@ List<CategoryItem> metalCategory = [
     name: "Copper",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 22,
     description: "Kitchen utensils, Kitchen sink, Bathroom fixtures, Electrical wiring, water bottles and some cookware."
   ),
   CategoryItem(
@@ -183,6 +203,7 @@ List<CategoryItem> metalCategory = [
     name: "Titanium",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 29,
     description: "Cutlery, Camping cookware, watches, jewelries, key chains, not stick and costly cookwares ans some pens."
   ),
   CategoryItem(
@@ -191,6 +212,7 @@ List<CategoryItem> metalCategory = [
     name: "Aluminum",
     metric: "Kg",
     quantity: 0,
+    pricePerKg: 19,
     description: "Aluminum Foil, Aluminum Cans, Cookware, Baking pans, window blinds, Ladders, Thermo flasks."
   ),
 ];

@@ -1,8 +1,10 @@
-import 'package:app/model/cartModel.dart';
+import 'package:app/data_constants/cart_items.dart';
+import 'package:app/model/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data_constants/categories-data.dart';
+import '../api/user_requests.dart';
+import '../data_constants/categories_data.dart';
 
 
 class Cart extends StatefulWidget {
@@ -17,9 +19,11 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Container(
       child: Consumer<CartViewModel>(builder: (context, viewModel, child) {
-        bool isCartEmpty = viewModel.cartItem.isEmpty;
-        String totalWeight = isCartEmpty? "--": getTotalWeightInKg(viewModel.cartItem).toString();
-        String totalOrderQuantity = isCartEmpty? "--": viewModel.cartItem.length.toString();
+        List<CategoryItem> cartItems = viewModel.cartItem;
+        bool isCartEmpty = cartItems.isEmpty;
+        String totalWeight = isCartEmpty? "--": getTotalWeightInKg(cartItems)["totalWeightInKg"].toString();
+        String totalOrderPrice = isCartEmpty? "--": getTotalWeightInKg(cartItems)["totalPrice"].toString();
+        String totalOrderQuantity = isCartEmpty? "--": cartItems.length.toString();
         String pickupDate = "20 jun";
 
         return Column(
@@ -88,10 +92,10 @@ class _CartState extends State<Cart> {
                               size: 18,
                             ),
                             Text(
-                              "100",
+                              totalOrderPrice,
                               style: TextStyle(fontSize: 35, color: Color(int.parse("0xff1F9500"))),
                             ),
-                            const SizedBox(width: 14)
+                            const SizedBox(width: 12.5)
                           ],)
                         ],),
                       )
@@ -104,18 +108,32 @@ class _CartState extends State<Cart> {
             // order list
             const SizedBox(height: 16),
             Container(
-              margin: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-              child: Text(
-                "Items added",
-                style: TextStyle(fontSize: 15, color: Color(int.parse("0xff555555"))),
-              ),
+              margin: const EdgeInsets.fromLTRB(28, 0, 28, 0),
+              child: Row(children: [
+                Text(
+                  "Items added",
+                  style: TextStyle(fontSize: 15, color: Color(int.parse("0xff555555"))),
+                ),
+                const Spacer(),
+                OutlinedButton(
+                  onPressed: () {
+                    createOrder(cartItems);
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                    overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 48, 138, 51)),
+                  ),
+                  child: const Text("Create Order"),
+                )
+              ],),
             ),
-            const SizedBox(height: 7),
+            const SizedBox(height: 5),
             Expanded(
               child: ListView(
                 children: [
                   SingleChildScrollView(
-                    child: buildAddedItems(context, viewModel.cartItem),
+                    child: buildAddedItems(context, cartItems),
                   ),
                 ],
               ),
@@ -211,12 +229,25 @@ _onQuantityChange(BuildContext context, List<CategoryItem> addedItems, CategoryI
   Provider.of<CartViewModel>(context, listen: false).updateQuantity(idOfChangedItem, newAddedItem[index]);
 }
 
-int getTotalWeightInKg(List<CategoryItem> addedItems) {
+Map<String, int> getTotalWeightInKg(List<CategoryItem> addedItems) {
   int totalWeightInKg = 0;
+  int totalPrice = 0;
   for(var addedItem in addedItems) {
     if(addedItem.metric == "Kg") {
       totalWeightInKg = totalWeightInKg + addedItem.quantity;
+      totalPrice = totalPrice + addedItem.pricePerKg*addedItem.quantity;
     }
   }
-  return totalWeightInKg;
+  return {
+    "totalWeightInKg": totalWeightInKg,
+    "totalPrice": totalPrice,
+  };
+}
+
+void createOrder(List<CategoryItem> cartItems) {
+  orderItems.clear();
+  for(var cartItem in cartItems) {
+    orderItems.add(CartItem(categoryId: cartItem.id, price: 2, categoryName: cartItem.name, metric:cartItem.metric, metricQuantity: cartItem.quantity, vendorId: "01").toJson());
+  }
+  sendOrder(orderItems);
 }

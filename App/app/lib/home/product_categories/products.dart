@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../common_widgets/categories-card.dart';
-import '../../data_constants/categories-data.dart';
+import '../../data_constants/categories_data.dart';
 
 class BatteriesCategory extends StatefulWidget {
   const BatteriesCategory({super.key, required this.pageNumber});
