@@ -1,7 +1,11 @@
-import 'package:app/api/user_requests.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../api/user_requests.dart';
+import '../model/auth_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +15,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,53 +67,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 onPressed: () async {
-                  login("2020hs70041@wilp.bits-pilani.ac.in", "bitstechie@123");
-                  // final box = GetStorage();
-                  // String text = "";
-                  // if (box.read('email') == null || box.read('email') == "") {
-                  //   text = "Please enter email";
-                  // } else if (box.read('password') == null ||
-                  //     box.read('password') == "") {
-                  //   text = "Please enter password";
-                  // }
-                  // if (text == "") {
-                  //   showCircularProgressBar(context);
+                  final box = GetStorage();
+                  String text = "";
+                  if (box.read('email') == null || box.read('email') == "") {
+                    text = "Please enter email";
+                  } else if (box.read('password') == null ||
+                      box.read('password') == "") {
+                    text = "Please enter password";
+                  }
+                  if (text == "") {
+                    // Map<String, dynamic>? userDetails = await login("2020hs70041@wilp.bits-pilani.ac.in", "bitstechie@123");
+                    Map<String, dynamic>? userDetails = await login(box.read('email'), box.read('password'));
+                    Provider.of<UserAuthModel>(context, listen: false).saveUserDetails(
+                      userDetails?["first_name"],
+                      userDetails?["last_name"],
+                      userDetails?["email"],
+                      DateFormat("dd MMM yyyy").format(DateTime.parse(userDetails?["createdAt"])),
+                    );
 
-                  //   try {
-                      // var headers = {
-                      //   'grant_type': 'password',
-                      //   'Content-Type': 'application/x-www-form-urlencoded',
-                      //   'Authorization':
-                      //       'Basic c2ItcmVjeWNsb25lIXQxNjAzODA6dG1iZ0pOOXlwWjI2MVpXQzc3T3NyTktjjlqqPQ=='
-                      // };
-                      // var request = http.Request(
-                      //     'POST',
-                      //     Uri.parse(
-                      //         'https://da0ftrial.authentication.us80.hana.ondemand.com/oauth/token'));
-                      // request.bodyFields = {
-                      //   'grant_type': 'password',
-                      //   'username': box.read('email'),
-                      //   'password': box.read('password')
-                      // };
-                      // request.headers.addAll(headers);
-                      // http.StreamedResponse response = await request.send();
-                      // if (response.statusCode == 200) {
-                      //   print(await response.stream.bytesToString());
-                      // } else {
-                      //   print(response.reasonPhrase);
-                      // }
-                  //   } catch (error) {
-                  //     print(error);
-                  //   } finally {
-                  //     Navigator.pop(context);
-                  //   }
-                  // } else {
-                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  //       content: Text(text),
-                  //       behavior: SnackBarBehavior.floating,
-                  //       shape: RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.circular(5.0))));
-                  // }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(text),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0))));
+                  }
                 },
                 child: const Text("Login"),
               ),

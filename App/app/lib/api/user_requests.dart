@@ -15,8 +15,6 @@ BaseOptions options = BaseOptions(
 
 // get user
 Future<Map<String, dynamic>> getUserDetails() async {
-  // remove afterwards
-  await saveToken();
   
   final token = await getToken();
   HttpOverrides.global = CustomHttpOverrides();
@@ -31,36 +29,36 @@ Future<Map<String, dynamic>> getUserDetails() async {
 }
 
 // login
-Future<void> login(String email, String password) async {
+Future<Map<String, dynamic>?> login(String email, String password) async {
 
   HttpOverrides.global = CustomHttpOverrides();
 
-  // dio.options.headers["x-approuter-authorization"] = "Bearer $token";
-  Dio dio = Dio(options);
+  Dio dio = Dio(BaseOptions(
+    baseUrl: AUTH_URL,
+  ));
   dio.options.headers["grant_type"] = "password";
   dio.options.headers["Content-Type"] = "application/x-www-form-urlencoded";
-  dio.options.headers["authorization"] = "'Basic '+ $base64Encode(utf8.encode('$email:$password'))";
-
+  dio.options.headers["authorization"] = "Basic ${base64Encode(utf8.encode('sb-recyclone!t160380:tmbgJN9ypZ261ZWC77OsrNKf2U0='))}";
+  try{
   Response<dynamic> response = await dio.post(
     AUTH_URL,
     data: {
+      "response_type": "token",
+      "grant_type": "password",
       "username": email,
       "password": password,
     }
   );
-
-  print(response.data.toString());
-
-
-  // final token = await getToken();
+  saveToken(response.data?["access_token"]);
+  return await getUserDetails();
+  } catch (error) {
+    print(error);
+  }
+  return null;
 }
 
-
-
 // create orders
-Future<void> sendOrder(List<Map<String, dynamic>> orderItems) async {
-  // remove afterwards
-  await saveToken();
+Future<int?> sendOrder(List<Map<String, dynamic>> orderItems) async {
   var body = jsonEncode(orderItems);
   
   final token = await getToken();
@@ -70,18 +68,17 @@ Future<void> sendOrder(List<Map<String, dynamic>> orderItems) async {
   dio.options.headers["x-approuter-authorization"] = "Bearer $token";
   dio.options.headers["contentTypeHeader"] = "application/json";
 
-  Response<dynamic> response = await dio.post(
+  Response<Map<String, dynamic>> response = await dio.post(
     "/manageRequest",
     data: body,
   );
 
   print(response.data.toString());
+  return response.statusCode;
 }
 
 // get user
 Future<List<OrderItems>> getOrdersCreated() async {
-  // remove afterwards
-  await saveToken();
   
   final token = await getToken();
   HttpOverrides.global = CustomHttpOverrides();

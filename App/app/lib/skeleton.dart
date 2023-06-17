@@ -1,6 +1,10 @@
+import 'package:app/model/auth_model.dart';
+import 'package:app/onboarding/login.dart';
+import 'package:app/onboarding/onbording.dart';
 import 'package:app/orders/orders.dart';
 import 'package:app/profile/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'cart/cart.dart';
 import 'home/home.dart';
@@ -33,7 +37,10 @@ class _SkeletonState extends State<Skeleton> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Consumer<UserAuthModel>(builder: (context, viewModel, child) {
+      bool isAuthenticated = viewModel.getAuthStatus();
+      bool isOnboard = viewModel.isOnboard();
+     return isAuthenticated? Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       backgroundColor: Color(int.parse("0xfff7f7f7")),
       bottomNavigationBar: 
@@ -75,6 +82,7 @@ class _SkeletonState extends State<Skeleton> {
             onTap: _onItemTapped,
           ),
         ),
-    );
+    ): isOnboard? const LoginScreen(): const OnBordingScreen();
+    });
   }
 }

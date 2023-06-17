@@ -3,7 +3,9 @@ import 'package:app/model/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../api/user_requests.dart';
 import '../data_constants/categories_data.dart';
+import '../model/auth_model.dart';
 
 
 class Cart extends StatefulWidget {
@@ -14,6 +16,10 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+
+  bool isLoading = false;
+  String orderCreationMessage = "";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,7 +58,7 @@ class _CartState extends State<Cart> {
                       children: [
                         const Text("Wonderful, "),
                         Text(
-                          "{abhi}",
+                          Provider.of<UserAuthModel>(context, listen: false).getUsersFirstName(),
                           style: TextStyle(color: Color(int.parse("0xffF8B500"))),
                         ),
                       ],
@@ -114,17 +120,44 @@ class _CartState extends State<Cart> {
                   style: TextStyle(fontSize: 15, color: Color(int.parse("0xff555555"))),
                 ),
                 const Spacer(),
-                OutlinedButton(
-                  onPressed: () {
-                    createOrder(cartItems);
+                ElevatedButton.icon(
+                  icon: isLoading
+                      ? const SizedBox(
+                        height: 14,
+                        width: 14,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.8,
+                        ),
+                      )
+                      : const Icon(Icons.add),
+                  label: Text(
+                    isLoading ? 'Loading...' : 'Create Order',
+                  ),
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    int? responseCode = await createOrder(cartItems, totalOrderPrice);
+                    if(responseCode == 201) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      _showToast(context, "Order created successfully");
+                    } else {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      _showToast(context, "Order created failed");
+                    }
+                    
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                     overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 48, 138, 51)),
                   ),
-                  child: const Text("Create Order"),
-                )
+                ),
               ],),
             ),
             const SizedBox(height: 5),
@@ -243,10 +276,21 @@ Map<String, int> getTotalWeightInKg(List<CategoryItem> addedItems) {
   };
 }
 
-void createOrder(List<CategoryItem> cartItems) {
+Future<int?> createOrder(List<CategoryItem> cartItems, String totalOrderPrice) async {
   orderItems.clear();
   for(var cartItem in cartItems) {
-    orderItems.add(CartItem(categoryId: cartItem.id, price: 2, categoryName: cartItem.name, metric:cartItem.metric, metricQuantity: cartItem.quantity, vendorId: "01").toJson());
+    orderItems.add(CartItem(categoryId: cartItem.id, price: cartItem.pricePerKg, categoryName: cartItem.name, metric:cartItem.metric, metricQuantity: cartItem.quantity, vendorId: "01").toJson());
   }
-  // sendOrder(orderItems);
+  return await sendOrder(orderItems);
 }
+
+void _showToast(BuildContext context, String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(milliseconds: 550),
+        action: SnackBarAction(label: 'Dismiss', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }

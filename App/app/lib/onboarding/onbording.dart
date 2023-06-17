@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../model/auth_model.dart';
 
 class OnBordingScreen extends StatefulWidget {
   const OnBordingScreen({super.key});
@@ -107,7 +110,7 @@ class OnBordingButton extends StatelessWidget {
                   foregroundColor: Colors.green,
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, "/login");
+                  Provider.of<UserAuthModel>(context, listen: false).onboarded();
                 },
                 child: const Text("Login"),
               ),

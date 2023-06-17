@@ -1,6 +1,9 @@
 import 'package:app/api/user_requests.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../model/auth_model.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -37,12 +40,24 @@ class _ProfileState extends State<Profile> {
                     const SizedBox(height: 12),
                     Text(snapshot.data?['email'].toString()?? ''),
                     const SizedBox(height: 8),
-                    Text("Joined the movement on: $joinedOn")
+                    Text("Joined the movement on: $joinedOn"),
+                    const SizedBox(height: 25),
+                    OutlinedButton(
+                      onPressed: () {
+                        Provider.of<UserAuthModel>(context, listen: false).logout();
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                        overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 48, 138, 51)),
+                      ),
+                      child: const Text("Log out"),
+                    )
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(44, 64, 44, 0),
+                padding: const EdgeInsets.fromLTRB(44, 28, 44, 0),
                 // child: Text('Result: ${snapshot.data}'),
                 child: Text(
                   'We want to take a moment to express our heartfelt gratitude for joining our platform and making a conscious effort to recycle waste with us. Your decision to be a part of our community is truly commendable, and we are thrilled to have you on board.',

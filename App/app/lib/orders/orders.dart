@@ -1,6 +1,8 @@
 import 'package:app/data_constants/order_details.dart';
+import 'package:app/model/auth_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../api/user_requests.dart';
 
 
@@ -53,7 +55,7 @@ class _OrdersState extends State<Orders> {
                       children: [
                         const Text("Awesome, "),
                         Text(
-                          "{abhi}",
+                          Provider.of<UserAuthModel>(context, listen: false).getUsersFirstName(),
                           style: TextStyle(color: Color(int.parse("0xffF8B500"))),
                         ),
                       ],
