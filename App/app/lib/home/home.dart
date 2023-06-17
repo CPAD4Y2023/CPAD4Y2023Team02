@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../data_constants/products_data.dart';
+import '../model/auth_model.dart';
 import 'product_categories/products.dart';
 
 class Home extends StatefulWidget {
@@ -39,7 +41,7 @@ class _HomeState extends State<Home> {
                 children: [
                   const Text("Welcome, "),
                   Text(
-                    "{abhi}",
+                    Provider.of<UserAuthModel>(context, listen: false).getUsersFirstName(),
                     style: TextStyle(color: Color(int.parse("0xffF8B500"))),
                   ),
                   const SizedBox(width: 10),

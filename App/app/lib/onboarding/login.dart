@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../api/user_requests.dart';
+import '../model/auth_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,33 +15,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late PageController _pageController;
-  int _pageIndex = 0;
 
-  @override
-  void initState() {
-    _pageController = PageController(initialPage: 0);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(int.parse("0xffffffff")),
-      body: SafeArea(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(child: SafeArea(
         child: Column(
           children: [
             Stack(
               children: [
                 const HeadingText('Hello There.'),
-                // height: MediaQuery.of(context).size.height,
-                // width: MediaQuery.of(context).size.width - 100.0),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(18.0, 0.0, 0.0, 0.0),
                   child: Image.asset(
@@ -50,11 +41,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             const SizedBox(height: 36),
-            GreenEmailInputField(),
+            const GreenEmailInputField(),
             const SizedBox(height: 36),
-            GreenPasswordInputField(),
+            const GreenPasswordInputField(),
             const SizedBox(height: 40),
-            Container(
+            SizedBox(
               width: 150,
               child: TextButton(
                 style: ButtonStyle(
@@ -85,36 +76,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     text = "Please enter password";
                   }
                   if (text == "") {
-                    showCircularProgressBar(context);
+                    // Map<String, dynamic>? userDetails = await login("2020hs70041@wilp.bits-pilani.ac.in", "bitstechie@123");
+                    Map<String, dynamic>? userDetails = await login(box.read('email'), box.read('password'));
+                    Provider.of<UserAuthModel>(context, listen: false).saveUserDetails(
+                      userDetails?["first_name"],
+                      userDetails?["last_name"],
+                      userDetails?["email"],
+                      DateFormat("dd MMM yyyy").format(DateTime.parse(userDetails?["createdAt"])),
+                    );
 
-                    try {
-                      var headers = {
-                        'grant_type': 'password',
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Authorization':
-                            'Basic c2ItcmVjeWNsb25lIXQxNjAzODA6dG1iZ0pOOXlwWjI2MVpXQzc3T3NyTktjjlqqPQ=='
-                      };
-                      var request = http.Request(
-                          'POST',
-                          Uri.parse(
-                              'https://da0ftrial.authentication.us80.hana.ondemand.com/oauth/token'));
-                      request.bodyFields = {
-                        'grant_type': 'password',
-                        'username': box.read('email'),
-                        'password': box.read('password')
-                      };
-                      request.headers.addAll(headers);
-                      http.StreamedResponse response = await request.send();
-                      if (response.statusCode == 200) {
-                        print(await response.stream.bytesToString());
-                      } else {
-                        print(response.reasonPhrase);
-                      }
-                    } catch (error) {
-                      print(error);
-                    } finally {
-                      Navigator.pop(context);
-                    }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(text),
@@ -128,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
             )
           ],
         ),
-      ),
+      ),),
     );
   }
 }
@@ -136,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
 class HeadingText extends StatelessWidget {
   final String text;
 
-  const HeadingText(this.text);
+  const HeadingText(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +125,8 @@ class HeadingText extends StatelessWidget {
 }
 
 class GreenEmailInputField extends StatefulWidget {
+  const GreenEmailInputField({super.key});
+
   @override
   _GreenEmailInputFieldState createState() => _GreenEmailInputFieldState();
 }
@@ -166,7 +138,7 @@ class _GreenEmailInputFieldState extends State<GreenEmailInputField> {
   @override
   void initState() {
     super.initState();
-    String savedEmail = box.read('email');
+    String savedEmail = box.read('email')?? '';
     _emailController.text = savedEmail;
   }
 
@@ -184,7 +156,7 @@ class _GreenEmailInputFieldState extends State<GreenEmailInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 340,
       child: TextField(
         controller: _emailController,
@@ -214,7 +186,7 @@ class _GreenEmailInputFieldState extends State<GreenEmailInputField> {
 }
 
 class GreenPasswordInputField extends StatefulWidget {
-  const GreenPasswordInputField();
+  const GreenPasswordInputField({super.key});
 
   @override
   _GreenPasswordInputFieldState createState() =>
@@ -228,7 +200,7 @@ class _GreenPasswordInputFieldState extends State<GreenPasswordInputField> {
   @override
   void initState() {
     super.initState();
-    String savedPassword = box.read('password');
+    String savedPassword = box.read('password')?? ''; 
     _passwordController.text = savedPassword;
   }
 
@@ -246,7 +218,7 @@ class _GreenPasswordInputFieldState extends State<GreenPasswordInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 340,
       child: TextField(
         style: const TextStyle(color: Colors.green),
@@ -273,6 +245,8 @@ class _GreenPasswordInputFieldState extends State<GreenPasswordInputField> {
 }
 
 class CircularProgressBar extends StatelessWidget {
+  const CircularProgressBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Positioned.fill(
@@ -296,7 +270,7 @@ void showCircularProgressBar(BuildContext context) {
     builder: (BuildContext context) {
       return WillPopScope(
         onWillPop: () async => false,
-        child: Dialog(
+        child: const Dialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
           child: CircularProgressBar(),
