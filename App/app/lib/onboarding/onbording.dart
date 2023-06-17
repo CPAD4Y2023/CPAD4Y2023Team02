@@ -101,6 +101,7 @@ class OnBordingButton extends StatelessWidget {
           )
         : Row(
             children: [
+              const Spacer(),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.green),
@@ -114,16 +115,17 @@ class OnBordingButton extends StatelessWidget {
                 },
                 child: const Text("Login"),
               ),
-              TextButton(
-                style: ButtonStyle(
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.green),
-                ),
-                onPressed: () {
-                  // implement the sign up logic
-                },
-                child: const Text("Signup"),
-              )
+              const SizedBox(width: 14),
+              // TextButton(
+              //   style: ButtonStyle(
+              //     foregroundColor:
+              //         MaterialStateProperty.all<Color>(Colors.green),
+              //   ),
+              //   onPressed: () {
+              //     // implement the sign up logic
+              //   },
+              //   child: const Text("Signup"),
+              // )
             ],
           );
   }
