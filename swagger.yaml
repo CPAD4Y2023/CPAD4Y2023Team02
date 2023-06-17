@@ -1,0 +1,552 @@
+openapi: 3.0.3
+info:
+  title: Recyclone
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: >-
+      https://approuter.ingress.recyclone.i524895.shoot.canary.k8s-hana.ondemand.com
+  - url: https://da0f6a6atrial.authentication.us10.hana.ondemand.com
+paths:
+  /api/v1/categories:
+    get:
+      tags:
+        - Catalog Service
+      summary: Get all categories
+      description: Get all categories
+      operationId: getAllCategories
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+    post:
+      tags:
+        - Catalog Service
+      summary: Create Category
+      description: Create Category
+      operationId: createCategory
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageLocation:
+                  type: string
+                  example: image/categories/Papers.jpg
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                        example: Newspapers are papers
+                      imageLocation:
+                        type: string
+                        example: image/categories/Newspapers.jpg
+                      metric:
+                        type: string
+                        example: kg
+                      name:
+                        type: string
+                        example: Newspapers
+                  example:
+                    - description: Newspapers are papers
+                      imageLocation: image/categories/Newspapers.jpg
+                      metric: kg
+                      name: Newspapers
+                    - description: Cardboards are papers
+                      imageLocation: image/categories/Cardboards.jpg
+                      metric: oz
+                      name: Cardboards
+                name:
+                  type: string
+                  example: Paper
+            example:
+              imageLocation: image/categories/Papers.jpg
+              items:
+                - description: Newspapers are papers
+                  imageLocation: image/categories/Newspapers.jpg
+                  metric: kg
+                  name: Newspapers
+                - description: Cardboards are papers
+                  imageLocation: image/categories/Cardboards.jpg
+                  metric: oz
+                  name: Cardboards
+              name: Paper
+      responses:
+        '200':
+          description: ''
+  /api/v1/categories/1:
+    get:
+      tags:
+        - Catalog Service
+      summary: Get Category
+      description: Get Category
+      operationId: getCategory
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+    put:
+      tags:
+        - Catalog Service
+      summary: Update Category
+      description: Update Category
+      operationId: updateCategory
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageLocation:
+                  type: string
+                  example: image/categories/Papers.jpg
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                        example: Newspapers are papers
+                      id:
+                        type: string
+                        example: '1'
+                      imageLocation:
+                        type: string
+                        example: image/categories/Newspapers.jpg
+                      metric:
+                        type: string
+                        example: kg
+                      name:
+                        type: string
+                        example: Newspapers
+                  example:
+                    - description: Newspapers are papers
+                      id: '1'
+                      imageLocation: image/categories/Newspapers.jpg
+                      metric: kg
+                      name: Newspapers
+                    - description: Cardboards are papers
+                      id: '2'
+                      imageLocation: image/categories/Cardboards.jpg
+                      metric: oz
+                      name: Cardboards
+                name:
+                  type: string
+                  example: Paper
+            example:
+              imageLocation: image/categories/Papers.jpg
+              items:
+                - description: Newspapers are papers
+                  id: '1'
+                  imageLocation: image/categories/Newspapers.jpg
+                  metric: kg
+                  name: Newspapers
+                - description: Cardboards are papers
+                  id: '2'
+                  imageLocation: image/categories/Cardboards.jpg
+                  metric: oz
+                  name: Cardboards
+              name: Paper
+      responses:
+        '200':
+          description: ''
+    delete:
+      tags:
+        - Catalog Service
+      summary: Delete Category
+      description: Delete Category
+      operationId: deleteCategory
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+  /oauth/token:
+    post:
+      tags:
+        - User Service
+      summary: Fetch JWT Token
+      description: Fetch JWT Token
+      operationId: fetchJwtToken
+      parameters:
+        - name: grant_type
+          in: header
+          schema:
+            type: string
+            example: password
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  example: password
+                password:
+                  type: string
+                  example: '{{USER_PASSWORD}}'
+                response_type:
+                  type: string
+                  example: token
+                scope:
+                  type: string
+                  example: ''
+                username:
+                  type: string
+                  example: '{{USER_NAME}}'
+            example:
+              grant_type: password
+              password: '{{USER_PASSWORD}}'
+              response_type: token
+              scope: ''
+              username: '{{USER_NAME}}'
+      responses:
+        '200':
+          description: ''
+  /api/v1/user:
+    get:
+      tags:
+        - User Service
+      summary: 'Get User Details '
+      description: 'Get User Details '
+      operationId: getUserDetails
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+    delete:
+      tags:
+        - User Service
+      summary: Delete request
+      description: Delete request
+      operationId: deleteRequest
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+    patch:
+      tags:
+        - User Service
+      summary: Patch User Details
+      description: Patch User Details
+      operationId: patchUserDetails
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  example: RECYCLER
+            example:
+              role: RECYCLER
+      responses:
+        '200':
+          description: ''
+  /api/v1/manageRequest/:
+    get:
+      tags:
+        - Request Manage Service
+      summary: Get Request for that user/vendor (using userId) Copy
+      description: Get Request for that user/vendor (using userId) Copy
+      operationId: getRequestForThatUserVendorUsingUseridCopy
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+    post:
+      tags:
+        - Request Manage Service
+      summary: Create Request
+      description: Create Request
+      operationId: createRequest
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  categoryId:
+                    type: string
+                    example: '103'
+                  categoryName:
+                    type: string
+                    example: Paper
+                  metric:
+                    type: string
+                    example: kg
+                  metricQuantity:
+                    type: number
+                    example: 2
+                  price:
+                    type: number
+                    example: 1
+                  vendorId:
+                    type: string
+                    example: '01'
+              example:
+                - categoryId: '103'
+                  categoryName: Paper
+                  metric: kg
+                  metricQuantity: 2
+                  price: 1
+                  vendorId: '01'
+                - categoryId: '104'
+                  categoryName: Plastic
+                  metric: kg
+                  metricQuantity: 2
+                  price: 1
+                  vendorId: '01'
+            example:
+              - categoryId: '103'
+                categoryName: Paper
+                metric: kg
+                metricQuantity: 2
+                price: 1
+                vendorId: '01'
+              - categoryId: '104'
+                categoryName: Plastic
+                metric: kg
+                metricQuantity: 2
+                price: 1
+                vendorId: '01'
+      responses:
+        '200':
+          description: ''
+  /api/v1/manageRequest/4221b427-bdbb-4556-ae2a-5fc0e576b634/:
+    get:
+      tags:
+        - Request Manage Service
+      summary: Get Request for Req Id Copy
+      description: Get Request for Req Id Copy
+      operationId: getRequestForReqIdCopy
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+    delete:
+      tags:
+        - Request Manage Service
+      summary: Delete Request Copy
+      description: Delete Request Copy
+      operationId: deleteRequestCopy
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+    patch:
+      tags:
+        - Request Manage Service
+      summary: Update request Copy
+      description: Update request Copy
+      operationId: updateRequestCopy
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: On Hold
+            example:
+              status: On Hold
+      responses:
+        '200':
+          description: ''
+  /api/v1/vendor/1:
+    get:
+      tags:
+        - Vendor Service
+      summary: Get Vendor By Id
+      description: Get Vendor By Id
+      operationId: getVendorById
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+  /api/v1/vendor:
+    get:
+      tags:
+        - Vendor Service
+      summary: Get Vendor
+      description: Get Vendor
+      operationId: getVendor
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      responses:
+        '200':
+          description: ''
+    post:
+      tags:
+        - Vendor Service
+      summary: Post Vendor
+      description: Post Vendor
+      operationId: postVendor
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: Recyling store 2
+                itemDetails:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      itemId:
+                        type: number
+                        example: 1
+                      price:
+                        type: string
+                        example: '1000'
+                  example:
+                    - itemId: 1
+                      price: '1000'
+                name:
+                  type: string
+                  example: Jack
+            example:
+              description: Recyling store 2
+              itemDetails:
+                - itemId: 1
+                  price: '1000'
+              name: Jack
+      responses:
+        '200':
+          description: ''
+  /api/v1/vendor/category:
+    post:
+      tags:
+        - Vendor Service
+      summary: Get Vendors By Category Id
+      description: Get Vendors By Category Id
+      operationId: getVendorsByCategoryId
+      parameters:
+        - name: x-approuter-authorization
+          in: header
+          schema:
+            type: string
+            example: Bearer {{token}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoryIds:
+                  type: array
+                  items:
+                    type: number
+                    example: 1
+                  example:
+                    - 1
+                    - 2
+            example:
+              categoryIds:
+                - 1
+                - 2
+      responses:
+        '200':
+          description: ''
+tags:
+  - name: Catalog Service
+  - name: User Service
+  - name: Request Manage Service
+  - name: Vendor Service
