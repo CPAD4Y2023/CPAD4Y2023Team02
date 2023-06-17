@@ -4,10 +4,10 @@ const requestManage = require("../controller/RequestManage.controller.js");
 
 
 /* GET home page. */
-reqRouter.post('/manageRequest', requestManage.createRequest)
-  .get('/manageRequest/:reqId', requestManage.getRequestByReqId)
-  .get('/manageRequest', requestManage.getAllRequest)
-  .patch('/manageRequest/:reqId', requestManage.updateRequest)
-  .delete('/manageRequest/:reqId', requestManage.deleteRequest);
+reqRouter.post('/api/v1/manageRequest', requestManage.createRequest)
+  .get('/api/v1/manageRequest/:reqId', requestManage.getRequestByReqId)
+  .get('/api/v1/manageRequest', requestManage.getAllRequest)
+  .patch('/api/v1/manageRequest/:reqId', requestManage.updateRequest)
+  .delete('/api/v1/manageRequest/:reqId', requestManage.deleteRequest);
 
 module.exports = reqRouter;
